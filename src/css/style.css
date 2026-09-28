@@ -9,7 +9,7 @@ html {
     background-size: 24px 24px;
 }
 
-/* Šikmý lesk (shimmer) oříznutý striktně na tvar písma s kontrastním náběhem */
+/* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – difuzní měkká vlna */
 .shimmer-text-overlay {
     position: absolute;
     inset: 0;
@@ -25,7 +25,7 @@ html {
     mask-image: linear-gradient(#000, #000);
     -webkit-mask-clip: text;
     mask-clip: text;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 1px rgba(255, 255, 255, 1));
+    mix-blend-mode: plus-lighter;
 }
 
 .shimmer-text-overlay::after {
@@ -37,14 +37,15 @@ html {
     height: 100%;
     background: linear-gradient(
         115deg,
-        transparent 0%,
-        rgba(9, 9, 11, 0.5) 20%,
-        rgba(255, 255, 255, 0.15) 38%,
-        #ffffff 50%,
-        rgba(255, 255, 255, 0.15) 62%,
-        rgba(9, 9, 11, 0.5) 80%,
-        transparent 100%
+        transparent 15%,
+        rgba(255, 255, 255, 0.05) 32%,
+        rgba(255, 255, 255, 0.45) 45%,
+        rgba(255, 255, 255, 0.9) 50%,
+        rgba(255, 255, 255, 0.45) 55%,
+        rgba(255, 255, 255, 0.05) 68%,
+        transparent 85%
     );
+    filter: blur(1.5px);
     transform: translateX(-100%);
     animation: shimmer-glyph-cycle 6.5s infinite;
 }
