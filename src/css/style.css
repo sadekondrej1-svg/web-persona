@@ -87,3 +87,20 @@ html {
 #hero-headline-container.has-active-lens .headline-luminescence-overlay {
     opacity: var(--lens-opacity, 1);
 }
+
+@media (max-width: 640px) {
+    .headline-luminescence-overlay {
+        -webkit-mask-image: radial-gradient(
+            circle 120px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+            black 0%,
+            rgba(0, 0, 0, 0.5) 45%,
+            transparent 100%
+        );
+        mask-image: radial-gradient(
+            circle 120px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+            black 0%,
+            rgba(0, 0, 0, 0.5) 45%,
+            transparent 100%
+        );
+    }
+}
