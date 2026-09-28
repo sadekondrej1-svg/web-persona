@@ -79,12 +79,11 @@ html {
         rgba(0, 0, 0, 0.5) 45%,
         transparent 100%
     );
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: var(--lens-opacity, 0);
+    transition: opacity 0.4s ease;
     filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
 }
 
-#hero-headline-container:hover .headline-luminescence-overlay,
-#hero-headline-container.has-pointer .headline-luminescence-overlay {
-    opacity: 1;
+#hero-headline-container.has-active-lens .headline-luminescence-overlay {
+    opacity: var(--lens-opacity, 1);
 }
