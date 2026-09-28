@@ -18,49 +18,53 @@ html {
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
-    color: rgba(255, 255, 255, 0.95);
+    overflow: hidden;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-mask-image: linear-gradient(#000, #000);
+    mask-image: linear-gradient(#000, #000);
+    -webkit-mask-clip: text;
+    mask-clip: text;
+    mix-blend-mode: plus-lighter;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
 
-    /* Šikmý přechod masky (úhel cca 115°) */
-    -webkit-mask-image: linear-gradient(
+.shimmer-text-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
         115deg,
         transparent 0%,
-        transparent 35%,
-        black 50%,
-        transparent 65%,
+        rgba(255, 255, 255, 0.1) 35%,
+        rgba(255, 255, 255, 0.85) 50%,
+        rgba(255, 255, 255, 0.1) 65%,
         transparent 100%
     );
-    mask-image: linear-gradient(
-        115deg,
-        transparent 0%,
-        transparent 35%,
-        black 50%,
-        transparent 65%,
-        transparent 100%
-    );
-    -webkit-mask-size: 250% 100%;
-    mask-size: 250% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-
-    /* 5s nekonečný cyklus: ~1.2s přejezd (0% - 25%), ~3.8s klid (25.1% - 100%) */
-    animation: shimmer-glyph-cycle 5s ease-in-out infinite;
+    transform: translateX(-100%);
+    animation: shimmer-glyph-cycle 5s infinite;
 }
 
 @keyframes shimmer-glyph-cycle {
     0% {
-        -webkit-mask-position: 150% 0;
-        mask-position: 150% 0;
+        transform: translateX(-100%);
+    }
+    4% {
+        transform: translateX(-20%);
+    }
+    20% {
+        transform: translateX(120%);
     }
     25% {
-        -webkit-mask-position: -50% 0;
-        mask-position: -50% 0;
+        transform: translateX(220%);
     }
     25.1% {
-        -webkit-mask-position: -50% 0;
-        mask-position: -50% 0;
+        transform: translateX(220%);
     }
     100% {
-        -webkit-mask-position: -50% 0;
-        mask-position: -50% 0;
+        transform: translateX(220%);
     }
 }
