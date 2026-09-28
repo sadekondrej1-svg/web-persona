@@ -3,21 +3,6 @@ html {
     background-color: #09090b;
 }
 
-/* CAD Dot-Grid pozadí s měkkou maskou do ztracena */
-.bg-grid-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    min-height: 700px;
-    pointer-events: none;
-    z-index: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 32px 32px;
-    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, black 20%, transparent 100%);
-    mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, black 20%, transparent 100%);
-}
 
 /* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – čistě světelná difuzní vlna */
 .shimmer-text-overlay {
