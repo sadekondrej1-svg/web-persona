@@ -9,7 +9,7 @@ html {
     background-size: 24px 24px;
 }
 
-/* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – aktivní kontrastní clona */
+/* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – čistě světelná difuzní vlna */
 .shimmer-text-overlay {
     position: absolute;
     inset: 0;
@@ -25,27 +25,26 @@ html {
     mask-image: linear-gradient(#000, #000);
     -webkit-mask-clip: text;
     mask-clip: text;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 1px rgba(255, 255, 255, 1));
+    mix-blend-mode: plus-lighter;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
 }
 
 .shimmer-text-overlay::after {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -50%;
+    width: 200%;
     height: 100%;
     background: linear-gradient(
         115deg,
-        transparent 5%,
-        rgba(0, 0, 0, 0.55) 25%,
-        rgba(255, 255, 255, 0.2) 40%,
-        #ffffff 50%,
-        rgba(255, 255, 255, 0.2) 60%,
-        rgba(0, 0, 0, 0.55) 75%,
-        transparent 95%
+        transparent 0%,
+        rgba(255, 255, 255, 0.0) 25%,
+        rgba(255, 255, 255, 0.95) 50%,
+        rgba(255, 255, 255, 0.0) 75%,
+        transparent 100%
     );
-    filter: blur(1.5px);
+    filter: blur(2px);
     transform: translateX(-100%);
     animation: shimmer-glyph-cycle 6.5s infinite;
 }
@@ -55,18 +54,18 @@ html {
         transform: translateX(-100%);
     }
     3% {
-        transform: translateX(-15%);
+        transform: translateX(-20%);
+    }
+    55% {
+        transform: translateX(45%);
     }
     60% {
-        transform: translateX(115%);
+        transform: translateX(120%);
     }
-    64% {
-        transform: translateX(220%);
-    }
-    64.1% {
-        transform: translateX(220%);
+    60.1% {
+        transform: translateX(120%);
     }
     100% {
-        transform: translateX(220%);
+        transform: translateX(120%);
     }
 }
