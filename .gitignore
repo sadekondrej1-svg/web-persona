@@ -1,0 +1,43 @@
+# Operační systémy
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Vývojová prostředí a IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Citlivá data a API klíče
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# Logy a chybové výpisy
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Závislosti a produkční buildy
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# Dočasné soubory lokálních serverů
+.live-server/
