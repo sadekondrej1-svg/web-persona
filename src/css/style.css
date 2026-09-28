@@ -1,0 +1,10 @@
+/* Vlastní globální pravidla a reset */
+html {
+    background-color: #09090b;
+}
+
+/* Jemný rastr na pozadí */
+.bg-grid-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
