@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cs" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio & Technická řešení</title>
+
+    <!-- Fonty: Plus Jakarta Sans (čistý sans-serif) + JetBrains Mono (inženýrský monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: '#10b981', // Smaragdový akcent
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-[#09090b] text-zinc-100 font-sans antialiased selection:bg-brand selection:text-black">
+
+    <!-- Navigace -->
+    <nav class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#09090b]/80 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#"
+                class="font-mono text-sm tracking-wider font-semibold text-zinc-200 hover:text-white transition">
+                DEV<span class="text-brand">/</span>WORKSPACE
+            </a>
+
+            <div class="flex items-center gap-8 text-sm text-zinc-400">
+                <a href="#projekty" class="hover:text-zinc-100 transition hidden sm:inline-block">Projekty</a>
+                <a href="#sluzby" class="hover:text-zinc-100 transition hidden sm:inline-block">Služby</a>
+                <a href="#kontakt"
+                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-medium rounded-md bg-zinc-100 text-zinc-950 hover:bg-white transition">
+                    Napsat zprávu
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero sekce -->
+    <main class="max-w-6xl mx-auto px-6 pt-20 pb-16">
+        <div class="max-w-3xl">
+
+            <!-- Status Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-zinc-900/60 text-xs font-mono text-zinc-400 mb-8">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brand"></span>
+                </span>
+                Dostupný pro nové projekty
+            </div>
+
+            <!-- Hlavní nadpis -->
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-zinc-100 leading-[1.1] mb-6">
+                Vývoj webových aplikací a automatizace procesů.
+            </h1>
+
+            <!-- Podnadpis -->
+            <p class="text-lg text-zinc-400 leading-relaxed max-w-2xl mb-10">
+                Navrhuji rychlé moderní weby, interní firemní nástroje a automatizované pipeline. Méně manuální
+                administrativy, čistý kód a funkční architektura.
+            </p>
+
+            <!-- CTA Tlačítka -->
+            <div class="flex flex-wrap items-center gap-4">
+                <a href="#projekty"
+                    class="px-6 py-3 rounded-lg bg-zinc-100 text-zinc-950 text-sm font-semibold hover:bg-white transition">
+                    Ukázky práce
+                </a>
+                <a href="#kontakt"
+                    class="px-6 py-3 rounded-lg border border-white/[0.1] bg-zinc-900/40 text-zinc-300 text-sm font-semibold hover:bg-zinc-800/60 hover:text-white transition">
+                    Konzultovat projekt
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Ukázkový technický stack / Bento preview linka -->
+        <div
+            class="mt-20 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6 text-zinc-500 font-mono text-xs">
+            <div>
+                <span class="block text-zinc-300 font-medium mb-1">Frontend</span>
+                Next.js, Tailwind CSS, React
+            </div>
+            <div>
+                <span class="block text-zinc-300 font-medium mb-1">Backend & API</span>
+                Python, FastAPI, Node.js
+            </div>
+            <div>
+                <span class="block text-zinc-300 font-medium mb-1">Automatizace</span>
+                Custom skripty, n8n, AI integrace
+            </div>
+            <div>
+                <span class="block text-zinc-300 font-medium mb-1">Infrastruktura</span>
+                Docker, Cloudflare, Vercel
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
