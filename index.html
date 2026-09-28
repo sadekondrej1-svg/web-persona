@@ -1,120 +1,140 @@
-<!DOCTYPE html>
-<html lang="cs" class="scroll-smooth">
+<!-- Bento Grid: Projekty & Specializace -->
+<section id="projekty" class="mt-24">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-100">
+            Vybrané projekty a zaměření
+        </h2>
+        <span class="text-xs font-mono text-zinc-500">01 // PORTFOLIO</span>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio & Technická řešení</title>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-    <!-- Fonty: Plus Jakarta Sans (čistý sans-serif) + JetBrains Mono (inženýrský monospace) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    },
-                    colors: {
-                        brand: '#10b981', // Smaragdový akcent
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-
-<body class="bg-[#09090b] text-zinc-100 font-sans antialiased selection:bg-brand selection:text-black">
-
-    <!-- Navigace -->
-    <nav class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#09090b]/80 backdrop-blur-md">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#"
-                class="font-mono text-sm tracking-wider font-semibold text-zinc-200 hover:text-white transition">
-                DEV<span class="text-brand">/</span>WORKSPACE
-            </a>
-
-            <div class="flex items-center gap-8 text-sm text-zinc-400">
-                <a href="#projekty" class="hover:text-zinc-100 transition hidden sm:inline-block">Projekty</a>
-                <a href="#sluzby" class="hover:text-zinc-100 transition hidden sm:inline-block">Služby</a>
-                <a href="#kontakt"
-                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-medium rounded-md bg-zinc-100 text-zinc-950 hover:bg-white transition">
-                    Napsat zprávu
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero sekce -->
-    <main class="max-w-6xl mx-auto px-6 pt-20 pb-16">
-        <div class="max-w-3xl">
-
-            <!-- Status Badge -->
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/[0.08] bg-zinc-900/60 text-xs font-mono text-zinc-400 mb-8">
-                <span class="relative flex h-2 w-2">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brand"></span>
-                </span>
-                Dostupný pro nové projekty
-            </div>
-
-            <!-- Hlavní nadpis -->
-            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-zinc-100 leading-[1.1] mb-6">
-                Vývoj webových aplikací a automatizace procesů.
-            </h1>
-
-            <!-- Podnadpis -->
-            <p class="text-lg text-zinc-400 leading-relaxed max-w-2xl mb-10">
-                Navrhuji rychlé moderní weby, interní firemní nástroje a automatizované pipeline. Méně manuální
-                administrativy, čistý kód a funkční architektura.
-            </p>
-
-            <!-- CTA Tlačítka -->
-            <div class="flex flex-wrap items-center gap-4">
-                <a href="#projekty"
-                    class="px-6 py-3 rounded-lg bg-zinc-100 text-zinc-950 text-sm font-semibold hover:bg-white transition">
-                    Ukázky práce
-                </a>
-                <a href="#kontakt"
-                    class="px-6 py-3 rounded-lg border border-white/[0.1] bg-zinc-900/40 text-zinc-300 text-sm font-semibold hover:bg-zinc-800/60 hover:text-white transition">
-                    Konzultovat projekt
-                </a>
-            </div>
-
-        </div>
-
-        <!-- Ukázkový technický stack / Bento preview linka -->
+        <!-- Karta 1 (Velká, 2 sloupce): Hlavní projekt / Webová aplikace -->
         <div
-            class="mt-20 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6 text-zinc-500 font-mono text-xs">
+            class="md:col-span-2 rounded-xl border border-white/[0.08] bg-zinc-900/40 p-6 sm:p-8 flex flex-col justify-between hover:border-white/[0.16] transition group">
             <div>
-                <span class="block text-zinc-300 font-medium mb-1">Frontend</span>
-                Next.js, Tailwind CSS, React
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="px-2.5 py-1 rounded text-[11px] font-mono font-medium bg-zinc-800 text-zinc-300 border border-white/[0.05]">
+                        Webová aplikace & Integrace
+                    </span>
+                    <span class="text-xs font-mono text-zinc-500 group-hover:text-zinc-300 transition">2026</span>
+                </div>
+                <h3 class="text-xl font-semibold text-zinc-100 mb-2">
+                    Zakázkový web a interní systém pro klienta
+                </h3>
+                <p class="text-sm text-zinc-400 leading-relaxed max-w-xl">
+                    Kompletní dodávka webové prezentace s důrazem na rychlost, čistý responzivní layout a přehlednou
+                    administraci. Optimalizováno pro bleskové načítání a SEO.
+                </p>
             </div>
-            <div>
-                <span class="block text-zinc-300 font-medium mb-1">Backend & API</span>
-                Python, FastAPI, Node.js
-            </div>
-            <div>
-                <span class="block text-zinc-300 font-medium mb-1">Automatizace</span>
-                Custom skripty, n8n, AI integrace
-            </div>
-            <div>
-                <span class="block text-zinc-300 font-medium mb-1">Infrastruktura</span>
-                Docker, Cloudflare, Vercel
+
+            <div
+                class="mt-8 pt-4 border-t border-white/[0.05] flex items-center justify-between text-xs font-mono text-zinc-500">
+                <div class="flex gap-3">
+                    <span>Next.js</span>
+                    <span>•</span>
+                    <span>Tailwind CSS</span>
+                    <span>•</span>
+                    <span>Cloudflare</span>
+                </div>
+                <span class="text-zinc-400 group-hover:text-brand transition flex items-center gap-1">
+                    Detail projektu →
+                </span>
             </div>
         </div>
-    </main>
 
-</body>
+        <!-- Karta 2 (1 sloupec): B2B Automatizace & Pipeline -->
+        <div
+            class="rounded-xl border border-white/[0.08] bg-zinc-900/40 p-6 sm:p-8 flex flex-col justify-between hover:border-white/[0.16] transition group">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="px-2.5 py-1 rounded text-[11px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        Automatizace
+                    </span>
+                    <span class="text-xs font-mono text-zinc-500">B2B</span>
+                </div>
+                <h3 class="text-lg font-semibold text-zinc-100 mb-2">
+                    Propojení systémů a API
+                </h3>
+                <p class="text-sm text-zinc-400 leading-relaxed">
+                    Návrh workflow, které nahrazují manuální přepisování dat mezi CRM, tabulkami a e-maily pomocí
+                    vlastních Python skriptů a integračních platforem.
+                </p>
+            </div>
 
-</html>
+            <div class="mt-8 pt-4 border-t border-white/[0.05] flex flex-wrap gap-2 text-xs font-mono text-zinc-500">
+                <span class="px-2 py-0.5 rounded bg-zinc-800/60">Python</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-800/60">FastAPI</span>
+                <span class="px-2 py-0.5 rounded bg-zinc-800/60">n8n</span>
+            </div>
+        </div>
+
+        <!-- Karta 3 (1 sloupec): Architektura a AI agenti -->
+        <div
+            class="rounded-xl border border-white/[0.08] bg-zinc-900/40 p-6 sm:p-8 flex flex-col justify-between hover:border-white/[0.16] transition">
+            <div>
+                <span
+                    class="px-2.5 py-1 rounded text-[11px] font-mono font-medium bg-zinc-800 text-zinc-300 border border-white/[0.05] inline-block mb-4">
+                    AI Integrace
+                </span>
+                <h3 class="text-lg font-semibold text-zinc-100 mb-2">
+                    Autonomní agenti
+                </h3>
+                <p class="text-sm text-zinc-400 leading-relaxed">
+                    Nasazení jazykových modelů pro analýzu dokumentů, třídění příchozích požadavků a automatickou
+                    přípravu podkladů.
+                </p>
+            </div>
+
+            <div class="mt-8 font-mono text-xs text-zinc-400 space-y-1.5 border-t border-white/[0.05] pt-4">
+                <div class="flex justify-between">
+                    <span class="text-zinc-500">Modely:</span>
+                    <span>Gemini API, Vertex AI</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-zinc-500">Formát:</span>
+                    <span>JSON Structured Output</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Karta 4 (2 sloupce): Workflow a přístup k vývoji -->
+        <div id="sluzby"
+            class="md:col-span-2 rounded-xl border border-white/[0.08] bg-zinc-900/40 p-6 sm:p-8 flex flex-col justify-between hover:border-white/[0.16] transition">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="px-2.5 py-1 rounded text-[11px] font-mono font-medium bg-zinc-800 text-zinc-300 border border-white/[0.05]">
+                        Jak pracuji
+                    </span>
+                    <span class="text-xs font-mono text-zinc-500">02 // WORKFLOW</span>
+                </div>
+                <h3 class="text-xl font-semibold text-zinc-100 mb-2">
+                    Přímočará technická realizace
+                </h3>
+                <p class="text-sm text-zinc-400 leading-relaxed max-w-xl">
+                    Žádné zbytečné vícepráce ani komplikované šablony. Řešení navrhuji tak, aby bylo stabilní, snadno
+                    udržovatelné a okamžitě řešilo konkrétní problém v provozu.
+                </p>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/[0.05] text-xs font-mono">
+                <div>
+                    <span class="text-brand font-semibold block mb-1">01. Analýza</span>
+                    <span class="text-zinc-500">Mapování procesů a specifikace potřeb.</span>
+                </div>
+                <div>
+                    <span class="text-brand font-semibold block mb-1">02. Prototyp</span>
+                    <span class="text-zinc-500">Rychlá funkční verze k otestování.</span>
+                </div>
+                <div>
+                    <span class="text-brand font-semibold block mb-1">03. Nasazení</span>
+                    <span class="text-zinc-500">Produkční běh na spolehlivém cloudu.</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
