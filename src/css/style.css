@@ -64,3 +64,27 @@ html {
         transform: translateX(110%);
     }
 }
+
+/* Interaktivní radiální světelná čočka na hlavním nadpisu */
+.headline-luminescence-overlay {
+    -webkit-mask-image: radial-gradient(
+        circle 160px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        black 0%,
+        rgba(0, 0, 0, 0.5) 45%,
+        transparent 100%
+    );
+    mask-image: radial-gradient(
+        circle 160px at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        black 0%,
+        rgba(0, 0, 0, 0.5) 45%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+}
+
+#hero-headline-container:hover .headline-luminescence-overlay,
+#hero-headline-container.has-pointer .headline-luminescence-overlay {
+    opacity: 1;
+}
