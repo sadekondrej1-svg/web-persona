@@ -60,42 +60,163 @@ html {
     }
 }
 
-/* Interaktivní radiální světelná čočka na hlavním nadpisu */
+/* ==========================================================================
+   Hardware Optical Scanner (Kinetika, Aretace & SVG Laserový Paprsek)
+   ========================================================================== */
+
+/* Vodicí kolejnice (Track) */
+#scanner-track {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Matné industriální dorazy na obou koncích */
+.scanner-endstop {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.22);
+    border-radius: 1px;
+}
+
+/* Skenovací hlava (Carriage) */
+.scanner-carriage {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 24px;
+    height: 12px;
+    background-color: #18181b; /* zinc-900 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transform: translateY(-50%) translateX(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 25;
+    will-change: transform;
+    pointer-events: none;
+}
+
+/* Optická mikro-čočka: během přejezdu svítí klidným kyanovým bodem */
+.scanner-lens {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #22d3ee; /* cyan-400 */
+    box-shadow: 0 0 6px #00f0ff;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Aretace a zaměření (Lock-on, 250ms): čočka se zklidní a zintenzivní jas */
+.scanner-carriage.is-locked .scanner-lens {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px #ffffff, 0 0 18px #00f0ff;
+    transform: scale(1.35);
+}
+
+/* ==========================================================================
+   Dynamický laserový paprsek v SVG (250–300 ms pulz pod úhlem)
+   ========================================================================== */
+
+#scanner-beam-canvas {
+    overflow: visible;
+}
+
+#laser-line-glow {
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px #00f0ff);
+    transition: opacity 0.06s ease;
+}
+
+#laser-line-core {
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 2px #ffffff);
+    transition: opacity 0.06s ease;
+}
+
+#laser-impact-spark {
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px #00f0ff);
+    transition: opacity 0.06s ease;
+}
+
+/* Okamžitý plný záblesk paprsku a ohniska při výstřelu */
+#scanner-beam-canvas.laser-active #laser-line-glow {
+    opacity: 0.95;
+}
+
+#scanner-beam-canvas.laser-active #laser-line-core {
+    opacity: 1;
+}
+
+#scanner-beam-canvas.laser-active #laser-impact-spark {
+    opacity: 1;
+}
+
+@property --wave-radius {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+}
+
+/* ==========================================================================
+   Světlovodivá absorpce: Radiální rázová vlna a sametové GPU dohasínání
+   ========================================================================== */
+
+/* Překryvná vrstva: oříznuta STRIKTNĚ na křivky písmen (nulový únik do pozadí) */
 .headline-luminescence-overlay {
-    -webkit-mask-image: radial-gradient(
-        circle 160px at var(--mouse-x, -999px) var(--mouse-y, -999px),
-        black 0%,
-        rgba(0, 0, 0, 0.5) 45%,
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Expanze z přesného bodu dopadu [impact-x, impact-y] s měkkým difuzním okrajem */
+    background-image: radial-gradient(
+        circle var(--wave-radius, 0px) at var(--impact-x, -999px) var(--impact-y, -999px),
+        #ffffff 0%,
+        #a5f3fc 14%,
+        #00f0ff 40%,
+        rgba(0, 240, 255, 0.65) 65%,
+        rgba(0, 240, 255, 0.15) 86%,
         transparent 100%
     );
-    mask-image: radial-gradient(
-        circle 160px at var(--mouse-x, -999px) var(--mouse-y, -999px),
-        black 0%,
-        rgba(0, 0, 0, 0.5) 45%,
-        transparent 100%
-    );
-    opacity: var(--lens-opacity, 0);
-    transition: opacity 0.4s ease;
-    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    will-change: opacity, --wave-radius;
+    --wave-radius: 0px;
+    /* Absolutně čisté černé pozadí bez jakýchkoliv stínů vně písmen */
 }
 
-#hero-headline-container.has-active-lens .headline-luminescence-overlay {
-    opacity: var(--lens-opacity, 1);
+/* Rázová vlna: 0–250ms plynulá expanze z ohniska, následovaná sametovým exponenciálním dozněním */
+.headline-luminescence-overlay.is-dispersing {
+    animation: shockwave-dispersion 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@media (max-width: 640px) {
-    .headline-luminescence-overlay {
-        -webkit-mask-image: radial-gradient(
-            circle 120px at var(--mouse-x, -999px) var(--mouse-y, -999px),
-            black 0%,
-            rgba(0, 0, 0, 0.5) 45%,
-            transparent 100%
-        );
-        mask-image: radial-gradient(
-            circle 120px at var(--mouse-x, -999px) var(--mouse-y, -999px),
-            black 0%,
-            rgba(0, 0, 0, 0.5) 45%,
-            transparent 100%
-        );
+@keyframes shockwave-dispersion {
+    0% {
+        --wave-radius: 0px;
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+    4% {
+        opacity: 1;
+    }
+    22% {
+        --wave-radius: 360px;
+        opacity: 1;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    100% {
+        --wave-radius: 420px;
+        opacity: 0;
     }
 }

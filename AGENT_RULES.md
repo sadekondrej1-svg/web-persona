@@ -18,3 +18,17 @@
 - Udržuj čisté sémantické bloky (<nav>, <header>, <section>, <footer>).
 - Veškeré vlastní CSS třídy piš výhradně do `src/css/style.css`.
 - Veškerou logiku a skripty piš výhradně do `src/js/main.js`.
+
+## Pravidla struktury projektu a práce se soubory
+- **Čistota kořenového adresáře:**
+  - NIKDY nevytvářej dočasné soubory, screenshoty ani pomocné skripty přímo v rootu projektu.
+  - Veškeré pořizované screenshoty pro vizuální verifikaci ukládej výhradně do složky `.temp/` (která je v `.gitignore`). Po ověření je smaž, pokud nejsou explicitně vyžádány.
+  - Pokud potřebuješ vytvořit pomocný NodeJS skript pro headless testování, umísti ho do složky `scripts/` nebo ho po úspěšném testu odstraň.
+- **Cesty k souborům (Path Resolution):**
+  - V Node.js skriptech vždy používej `path.join(__dirname, ...)` nebo `path.resolve()`, aby nedocházelo k chybám v lomítkách na Windows (např. nechtěný escape `\w`).
+- **Architektura kódu:**
+  - Produkční kód patří výhradně do stávající struktury:
+    - HTML: `index.html` (nebo příslušné šablony)
+    - Styly: `src/css/style.css`
+    - Skripty: `src/js/main.js` (případně modulární členění v `src/js/`)
+    - Statická aktiva: `public/assets/`

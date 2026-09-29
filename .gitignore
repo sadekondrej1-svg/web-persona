@@ -41,3 +41,8 @@ build/
 
 # Dočasné soubory lokálních serverů
 .live-server/
+
+# Dočasné soubory, screenshoty a testovací běhy
+.temp/*
+!.temp/.gitkeep
+/*.png
