@@ -1,8 +1,47 @@
 /* Vlastní globální pravidla a reset */
 html {
-    background-color: #09090b;
+    background-color: #070709;
+    color-scheme: dark;
+    scroll-behavior: smooth;
 }
 
+::selection {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+}
+
+body {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #070709;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Primární CTA tlačítko se světelnou fazetou a inženýrským přechodem */
+.btn-primary-facet {
+    background-color: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary-facet:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: #202024;
+}
+
+/* Sekundární tlačítka a odkazy s jemným inženýrským přechodem */
+.btn-secondary-ghost {
+    transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dělicí linky do ztracena (Gradient Dividers) */
+.divider-fade {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+}
 
 /* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – čistě světelná difuzní vlna */
 .shimmer-text-overlay {
@@ -61,162 +100,69 @@ html {
 }
 
 /* ==========================================================================
-   Hardware Optical Scanner (Kinetika, Aretace & SVG Laserový Paprsek)
+   Hero sekce: Celoobrazovkové pozadí (Full-Bleed) a responzivní ambientní světlo
    ========================================================================== */
 
-/* Vodicí kolejnice (Track) */
-#scanner-track {
-    background-color: rgba(255, 255, 255, 0.08);
-}
-
-/* Matné industriální dorazy na obou koncích */
-.scanner-endstop {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 8px;
-    background-color: rgba(255, 255, 255, 0.22);
-    border-radius: 1px;
-}
-
-/* Skenovací hlava (Carriage) */
-.scanner-carriage {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 24px;
-    height: 12px;
-    background-color: #18181b; /* zinc-900 */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    transform: translateY(-50%) translateX(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 25;
-    will-change: transform;
-    pointer-events: none;
-}
-
-/* Optická mikro-čočka: během přejezdu svítí klidným kyanovým bodem */
-.scanner-lens {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: #22d3ee; /* cyan-400 */
-    box-shadow: 0 0 6px #00f0ff;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Aretace a zaměření (Lock-on, 250ms): čočka se zklidní a zintenzivní jas */
-.scanner-carriage.is-locked .scanner-lens {
-    background-color: #ffffff;
-    box-shadow: 0 0 10px #ffffff, 0 0 18px #00f0ff;
-    transform: scale(1.35);
-}
-
-/* ==========================================================================
-   Dynamický laserový paprsek v SVG (250–300 ms pulz pod úhlem)
-   ========================================================================== */
-
-#scanner-beam-canvas {
-    overflow: visible;
-}
-
-#laser-line-glow {
-    opacity: 0;
-    pointer-events: none;
-    filter: drop-shadow(0 0 6px #00f0ff);
-    transition: opacity 0.06s ease;
-}
-
-#laser-line-core {
-    opacity: 0;
-    pointer-events: none;
-    filter: drop-shadow(0 0 2px #ffffff);
-    transition: opacity 0.06s ease;
-}
-
-#laser-impact-spark {
-    opacity: 0;
-    pointer-events: none;
-    filter: drop-shadow(0 0 8px #00f0ff);
-    transition: opacity 0.06s ease;
-}
-
-/* Okamžitý plný záblesk paprsku a ohniska při výstřelu */
-#scanner-beam-canvas.laser-active #laser-line-glow {
-    opacity: 0.95;
-}
-
-#scanner-beam-canvas.laser-active #laser-line-core {
-    opacity: 1;
-}
-
-#scanner-beam-canvas.laser-active #laser-impact-spark {
-    opacity: 1;
-}
-
-@property --wave-radius {
-    syntax: '<length>';
-    inherits: false;
-    initial-value: 0px;
-}
-
-/* ==========================================================================
-   Světlovodivá absorpce: Radiální rázová vlna a sametové GPU dohasínání
-   ========================================================================== */
-
-/* Překryvná vrstva: oříznuta STRIKTNĚ na křivky písmen (nulový únik do pozadí) */
-.headline-luminescence-overlay {
-    position: absolute;
-    inset: 0;
+#hero {
+    position: relative;
     width: 100%;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    background-color: #070709;
+    background-image: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.03), transparent 65%);
+}
+
+@media (min-width: 640px) {
+    #hero {
+        background-image: radial-gradient(ellipse 900px 550px at 50% 35%, rgba(255, 255, 255, 0.04), transparent 70%);
+    }
+}
+
+/* Platinový kovový přechod na nadpisu - sjednocený, prémiový a identický pro všechny 3 řádky */
+.headline-metallic-text {
+    background: linear-gradient(180deg, #ffffff 0%, #e4e4e7 65%, #a1a1aa 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    /* Expanze z přesného bodu dopadu [impact-x, impact-y] s měkkým difuzním okrajem */
-    background-image: radial-gradient(
-        circle var(--wave-radius, 0px) at var(--impact-x, -999px) var(--impact-y, -999px),
-        #ffffff 0%,
-        #a5f3fc 14%,
-        #00f0ff 40%,
-        rgba(0, 240, 255, 0.65) 65%,
-        rgba(0, 240, 255, 0.15) 86%,
-        transparent 100%
-    );
-    opacity: 0;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
+    padding-top: 0.05em;
+    padding-bottom: 0.05em;
+}
+
+/* ==========================================================================
+   Precision Craft Pass: Rastr, Interaktivní reflektor a Analogový šum
+   ========================================================================== */
+
+/* Architektonický rastr do ztracena (Background Precision Grid) */
+.precision-grid {
+    position: absolute;
+    inset: 0;
     pointer-events: none;
-    user-select: none;
-    will-change: opacity, --wave-radius;
-    --wave-radius: 0px;
-    /* Absolutně čisté černé pozadí bez jakýchkoliv stínů vně písmen */
+    z-index: 1;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(circle 700px at 50% 45%, black 20%, transparent 85%);
+    mask-image: radial-gradient(circle 700px at 50% 45%, black 20%, transparent 85%);
 }
 
-/* Rázová vlna: 0–250ms plynulá expanze z ohniska, následovaná sametovým exponenciálním dozněním */
-.headline-luminescence-overlay.is-dispersing {
-    animation: shockwave-dispersion 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Interaktivní reflektor na kurzor (Cursor Ambient Spotlight) */
+.cursor-spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 40%), rgba(255, 255, 255, 0.045), transparent 60%);
+    will-change: background;
 }
 
-@keyframes shockwave-dispersion {
-    0% {
-        --wave-radius: 0px;
-        opacity: 0;
-        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-    4% {
-        opacity: 1;
-    }
-    22% {
-        --wave-radius: 360px;
-        opacity: 1;
-        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    100% {
-        --wave-radius: 420px;
-        opacity: 0;
-    }
+/* Analogový mikro-šum (Subtle Grain Layer) */
+.subtle-grain {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
