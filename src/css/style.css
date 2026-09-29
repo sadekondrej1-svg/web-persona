@@ -27,7 +27,7 @@ body {
 }
 
 .btn-primary-facet:hover {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 85, 0, 0.5);
     background-color: #202024;
 }
 
@@ -136,13 +136,37 @@ body {
 .precision-grid {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
+    overflow: hidden;
     z-index: 1;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 48px 48px;
-    -webkit-mask-image: radial-gradient(circle 700px at 50% 45%, black 20%, transparent 85%);
-    mask-image: radial-gradient(circle 700px at 50% 45%, black 20%, transparent 85%);
+}
+
+@media (min-width: 640px) {
+    .precision-grid {
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    }
+}
+
+.hero-grid-fade {
+    /* Sametový přechod do ztracena do všech stran i dolů */
+    -webkit-mask-image: radial-gradient(
+        ellipse 75% 60% at 50% 45%,
+        rgba(0, 0, 0, 1) 15%,
+        rgba(0, 0, 0, 0.5) 45%,
+        rgba(0, 0, 0, 0) 80%
+    );
+    mask-image: radial-gradient(
+        ellipse 75% 60% at 50% 45%,
+        rgba(0, 0, 0, 1) 15%,
+        rgba(0, 0, 0, 0.5) 45%,
+        rgba(0, 0, 0, 0) 80%
+    );
 }
 
 /* Interaktivní reflektor na kurzor (Cursor Ambient Spotlight) */
@@ -156,13 +180,141 @@ body {
     will-change: background;
 }
 
-/* Analogový mikro-šum (Subtle Grain Layer) */
-.subtle-grain {
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    opacity: 0.025;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+/* Fyzikální textura materiálu (Matný kov / Micro-grain) */
+.bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* Pomocná třída pro odsazení podtržení */
+.underline-offset-6 {
+    text-underline-offset: 6px;
+}
+
+/* ==========================================================================
+   Safety / Hardware Orange (#FF5500) Micro-Akcenty
+   ========================================================================== */
+#copy-email-btn.copied {
+    border-color: rgba(255, 85, 0, 0.45) !important;
+    background-color: rgba(255, 85, 0, 0.06) !important;
+}
+
+a[href*="github.com"]:hover span:last-child {
+    color: #FF5500 !important;
+}
+
+#back-to-top:hover span:last-child {
+    color: #FF5500 !important;
+}
+
+/* ==========================================================================
+   Filmový sametový náběh (Cinematic Optical Focus Boot-up)
+   ========================================================================== */
+@keyframes cinematicBgFade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes cinematicFocus {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(0);
+    }
+}
+
+.anim-cinematic-bg {
+    animation: cinematicBgFade 1.2s ease-out 0ms both;
+    will-change: opacity;
+}
+
+.animate-cinematic {
+    animation: cinematicFocus 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform, opacity, filter;
+}
+
+/* Organická vlna (překrývající se zpoždění) */
+.anim-delay-100 {
+    animation-delay: 100ms;
+}
+
+.anim-delay-160 {
+    animation-delay: 160ms;
+}
+
+.anim-delay-220 {
+    animation-delay: 220ms;
+}
+
+.anim-delay-300 {
+    animation-delay: 300ms;
+}
+
+.anim-delay-380 {
+    animation-delay: 380ms;
+}
+
+/* Vynoření navigace */
+.anim-cinematic-nav {
+    animation: cinematicFocus 0.9s cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
+    will-change: transform, opacity, filter;
+}
+
+/* ==========================================================================
+   Pomalý dech ambientního světla (Subtle Breathing)
+   ========================================================================== */
+@keyframes subtleBreathe {
+    0%, 100% {
+        opacity: 0.35;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.55;
+        transform: translate(-50%, -50%) scale(1.04);
+    }
+}
+
+.ambient-breathing {
+    animation: subtleBreathe 7s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .anim-cinematic-bg,
+    .animate-cinematic,
+    .anim-cinematic-nav,
+    .ambient-breathing {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+    }
+}
+
+/* ==========================================================================
+   Inerciální smooth-scroll Lenis
+   ========================================================================== */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
 }

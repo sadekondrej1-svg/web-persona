@@ -4,12 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio & Technická řešení</title>
+    <title>Ondřej Šádek — Vývoj webů &amp; Backendové architektury</title>
 
-    <meta name="description" content="Autorská řešení webových aplikací a systémové integrace s důrazem na deterministické chování.">
+    <meta name="description" content="Zakázkový vývoj spolehlivých systémů v Pythonu (FastAPI) a moderních webových rozhraní v Next.js. Důraz na čistou architekturu a bleskovou odezvu.">
+    <meta name="theme-color" content="#070709">
+    <meta name="color-scheme" content="dark">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0 0 32 32'%3E%3Crect%20width='32'%20height='32'%20rx='6'%20fill='%2318181b'/%3E%3Ctext%20x='16'%20y='21'%20font-size='14'%20text-anchor='middle'%20fill='%23ffffff'%20font-family='sans-serif'%20font-weight='bold'%3EOS%3C/text%3E%3C/svg%3E">
+    <!-- Open Graph Metadata -->
+    <meta property="og:site_name" content="Ondřej Šádek">
+    <meta property="og:title" content="Ondřej Šádek — Vývoj webů &amp; Backendové architektury">
+    <meta property="og:description" content="Zakázkový vývoj spolehlivých systémů v Pythonu (FastAPI) a moderních webových rozhraní v Next.js. Důraz na čistou architekturu a bleskovou odezvu.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sadekondrej.cz/">
+    <meta property="og:locale" content="cs_CZ">
+    <meta property="og:image" content="og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Ondřej Šádek — Vývoj webů &amp; Backendové architektury">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ondřej Šádek — Vývoj webů &amp; Backendové architektury">
+    <meta name="twitter:description" content="Zakázkový vývoj spolehlivých systémů v Pythonu (FastAPI) a moderních webových rozhraní v Next.js. Důraz na čistou architekturu a bleskovou odezvu.">
+    <meta name="twitter:image" content="og-image.png">
+
+    <!-- Favicon (Bit Cell Matrix) -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <!-- Typografie: Geist -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +55,9 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        xs: '375px',
+                    },
                     fontFamily: {
                         sans: ['"Geist"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                     },
@@ -50,12 +75,12 @@
 
 <body
     class="bg-[#070709] text-zinc-100 font-sans antialiased min-h-screen overflow-x-hidden relative">
-    <!-- Analogový mikro-šum (Subtle Grain Layer) -->
-    <div class="subtle-grain" aria-hidden="true"></div>
+    <!-- Fyzikální textura materiálu (Matný kov / Micro-grain) -->
+    <div class="bg-noise pointer-events-none fixed inset-0 z-50" aria-hidden="true"></div>
 
     <!-- SECTION: NAVBAR (Frosted Glass) -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#070709]/75 backdrop-blur-md border-b border-white/[0.06]">
-        <nav class="max-w-6xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between" aria-label="Hlavní navigace">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#070709]/75 backdrop-blur-md border-b border-white/[0.06] anim-cinematic-nav">
+        <nav class="w-full max-w-4xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between" aria-label="Hlavní navigace">
             <a href="#" class="text-sm tracking-tight relative inline-flex items-center group shrink-0">
                 <!-- Původní dvoubarevný text -->
                 <span class="text-zinc-500 group-hover:text-zinc-300 transition-colors">ondřej</span>
@@ -68,53 +93,64 @@
                 </span>
             </a>
 
-            <!-- Odkazy a tlačítko na desktopu (na mobilu skryto pro maximální klid) -->
-            <div class="hidden sm:flex items-center gap-6">
-                <a href="#about"
-                    class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Architektura</a>
-                <a href="#contact"
-                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-zinc-200 bg-zinc-900 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-colors min-h-[36px]">
-                    Kontakt
-                </a>
+            <!-- Pravá strana: Živý hardware status a akce -->
+            <div class="flex items-center gap-2 sm:gap-6">
+                <!-- Živý hardware status -->
+                <div class="flex items-center gap-1.5 text-[10px] xs:text-[11px] text-zinc-400 font-normal">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>
+                    <span id="live-time">--:--</span>
+                </div>
+
+                <!-- Mobilní kompaktní tlačítko pro kontakt (přímé, bez hamburger menu) -->
+                <a href="#contact" class="inline-flex sm:hidden items-center justify-center text-[12px] font-medium tracking-wide text-zinc-300 bg-white/[0.04] border border-white/[0.1] rounded-[3px] px-2.5 py-1 hover:border-white/20 hover:text-white active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 select-none">Kontakt</a>
+
+                <!-- Odkazy a tlačítko na desktopu -->
+                <div class="hidden sm:flex items-center gap-6">
+                    <a href="#about"
+                        class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Architektura</a>
+                    <a href="#contact"
+                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-zinc-200 bg-zinc-900 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-colors active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 select-none min-h-[36px]">
+                        Kontakt
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
 
     <main class="w-full relative z-10">
         <!-- SECTION: HERO (100dvh) -->
-        <section id="hero" class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center pt-24 pb-20 sm:pb-24 px-6 sm:px-8 overflow-hidden">
-            <!-- Architektonický rastr a interaktivní reflektor na kurzor -->
-            <div class="precision-grid" aria-hidden="true"></div>
-            <div class="cursor-spotlight" aria-hidden="true"></div>
+        <section id="hero" class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center px-4 sm:px-6 overflow-hidden">
+            <!-- Architektonický rastr se sametovým rozplynutím a interaktivní reflektor na kurzor -->
+            <div class="precision-grid hero-grid-fade anim-cinematic-bg absolute inset-0 w-full h-full pointer-events-none overflow-hidden" aria-hidden="true"></div>
+            <div class="cursor-spotlight anim-cinematic-bg" aria-hidden="true"></div>
 
-            <div class="relative z-10 w-full max-w-3xl mx-auto px-4 py-8 sm:px-8 sm:py-12 flex flex-col items-center text-center bg-transparent my-auto">
-                <!-- Architektonické zaměřovače (CAD Corner Marks) - skryté na mobilu, viditelné na sm+ -->
-                <span class="hidden sm:block absolute -top-3 -left-3 text-zinc-600 text-xs font-mono select-none pointer-events-none" aria-hidden="true">+</span>
-                <span class="hidden sm:block absolute -top-3 -right-3 text-zinc-600 text-xs font-mono select-none pointer-events-none" aria-hidden="true">+</span>
-                <span class="hidden sm:block absolute -bottom-3 -left-3 text-zinc-600 text-xs font-mono select-none pointer-events-none" aria-hidden="true">+</span>
-                <span class="hidden sm:block absolute -bottom-3 -right-3 text-zinc-600 text-xs font-mono select-none pointer-events-none" aria-hidden="true">+</span>
+            <div class="relative z-10 w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center">
 
-                <!-- Výrazné prostorové nasvícení (Ambient Glow) -->
-                <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-b from-white/[0.12] to-transparent rounded-full blur-[100px] -z-10" aria-hidden="true"></div>
+                <!-- Výrazné prostorové nasvícení (Ambient Glow) s pomalým dechem a plynulým filmovým náběhem -->
+                <div class="anim-cinematic-bg pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 flex items-center justify-center" aria-hidden="true">
+                    <div class="ambient-breathing absolute left-1/2 top-1/2 w-[260px] h-[180px] sm:w-[600px] sm:h-[350px] bg-gradient-to-b from-white/[0.14] to-transparent rounded-full blur-[60px] sm:blur-[100px]"></div>
+                    <div class="ambient-breathing absolute left-1/2 top-1/2 w-[160px] h-[100px] sm:w-[320px] sm:h-[180px] bg-[#FF5500]/[0.02] rounded-full blur-[40px] sm:blur-[70px]"></div>
+                </div>
 
-                <!-- 1. Hlavní třířádkový nadpis se sjednoceným platinovým přechodem -->
-                <h1 class="text-[1.5rem] xs:text-[1.85rem] sm:text-4xl md:text-5xl lg:text-[4.25rem] font-medium tracking-[-0.03em] leading-[1.1] flex flex-col items-center text-center mx-auto gap-y-1 sm:gap-y-1.5 md:gap-y-2 select-none">
-                    <span class="whitespace-nowrap"><span class="headline-metallic-text">Vývoj webových aplikací.</span></span>
-                    <span class="whitespace-nowrap"><span class="headline-metallic-text">Systémová integrace.</span></span>
-                    <span class="whitespace-nowrap"><span class="headline-metallic-text">Automatizace.</span></span>
+                <!-- 1. Hlavní třířádkový nadpis: filmový náběh s optickým zaostřením po řádcích (100ms, 160ms, 220ms) -->
+                <h1 class="w-full text-center mx-auto text-[22px] xs:text-[26px] sm:text-4xl lg:text-[46px] font-semibold tracking-tight leading-[1.12] text-balance flex flex-col items-center text-center gap-y-1 sm:gap-y-1.5 select-none">
+                    <span class="animate-cinematic anim-delay-100 w-full text-center block"><span class="headline-metallic-text">Vývoj webových aplikací.</span></span>
+                    <span class="animate-cinematic anim-delay-160 w-full text-center block"><span class="headline-metallic-text">Backendové architektury.</span></span>
+                    <span class="animate-cinematic anim-delay-220 w-full text-center block"><span class="headline-metallic-text">Vysokovýkonná API.</span></span>
                 </h1>
 
-                <!-- 2. Podtitul -->
-                <p class="text-zinc-400 text-base sm:text-lg max-w-lg mx-auto text-center leading-relaxed mt-6 font-normal">
-                    Autorská řešení s důrazem na deterministické chování a nulovou údržbu.
+                <!-- 2. Podtitul s organickým zpožděním 300ms -->
+                <p class="animate-cinematic anim-delay-300 text-xs sm:text-sm md:text-base text-zinc-400 max-w-lg mx-auto mt-3 sm:mt-4 leading-relaxed font-normal">
+                    Zakázkový vývoj spolehlivých systémů v Pythonu a Next.js s důrazem na čistou architekturu, nulovou údržbu a bleskovou odezvu.
                 </p>
 
-                <!-- 3. CTA tlačítka (responzivní přerovnání pod sebe na mobilu, vedle sebe na desktopu) -->
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto mt-8">
-                    <a href="#about" class="btn-primary-facet text-zinc-100 rounded-lg inline-flex items-center justify-center shadow-sm whitespace-nowrap py-3 sm:py-2.5 px-6 text-center text-sm font-medium">
-                        Prozkoumat práci
+                <!-- 3. CTA tlačítka s organickým zpožděním 380ms a taktilní active odezvou -->
+                <div class="animate-cinematic anim-delay-380 w-full max-w-[280px] sm:max-w-none mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 mt-8 sm:mt-10">
+                    <a href="#about" class="group relative inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide text-zinc-100 bg-[#121215] border border-white/[0.12] border-t-white/[0.22] hover:border-[#FF5500]/50 hover:bg-[#18181c] active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)] rounded-[3px] sm:rounded-[4px] h-9 sm:h-10 whitespace-nowrap select-none">
+                        <span>Něco o mně</span>
+                        <span class="text-[#FF5500] font-medium ml-1 transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
                     </a>
-                    <a href="#contact" class="btn-secondary-ghost border border-white/10 text-zinc-400 hover:text-white hover:border-white/20 rounded-lg inline-flex items-center justify-center whitespace-nowrap py-3 sm:py-2.5 px-6 text-center text-sm font-medium">
+                    <a href="#contact" class="inline-flex items-center justify-center px-5 py-2.5 text-xs sm:text-sm font-medium tracking-wide text-zinc-400 hover:text-white bg-transparent border border-white/[0.06] hover:border-white/[0.16] hover:bg-white/[0.02] active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 rounded-[3px] sm:rounded-[4px] h-9 sm:h-10 whitespace-nowrap select-none">
                         Kontaktovat
                     </a>
                 </div>
@@ -126,29 +162,84 @@
 
         <!-- SECTION: ABOUT (EDITORIAL SWISS LAYOUT) -->
         <section id="about" class="w-full bg-[#070709] py-20 sm:py-28">
-            <div class="max-w-4xl mx-auto px-6 sm:px-8">
+            <div class="max-w-4xl mx-auto px-4 sm:px-8">
                 <!-- Redakční dvousloupcový blok -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
                     <!-- Vlevo: Lidský a věcný text -->
                     <div class="md:col-span-6">
                         <p class="text-zinc-200 text-lg sm:text-xl leading-relaxed font-normal">
-                            Navrhuji a vyvíjím backendové systémy, moderní webové aplikace a datové integrace. Soustředím se na přehledný kód, rychlá rozhraní a automatizace, které fungují spolehlivě bez nutnosti neustálého dohledu.
+                            Navrhuji a vyvíjím backendové systémy, moderní webové aplikace a datové integrace. Soustředím se na přehledný kód, rychlá rozhraní a spolehlivou architekturu bez nutnosti neustálého dohledu.
                         </p>
                     </div>
 
                     <!-- Vpravo: Čisté řádky se zaměřením -->
                     <div class="md:col-span-6 pt-2 md:pt-0">
                         <div class="border-b border-white/[0.05] pb-4 mb-4">
-                            <div class="text-sm font-medium text-zinc-100">Backend & API</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Python, FastAPI, architektura databází</div>
+                            <div class="text-sm font-medium text-zinc-100">Backend &amp; Databáze</div>
+                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Python, FastAPI, PostgreSQL, Redis, asynchronní architektura</div>
                         </div>
                         <div class="border-b border-white/[0.05] pb-4 mb-4">
                             <div class="text-sm font-medium text-zinc-100">Frontend</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Next.js, React, Tailwind CSS</div>
+                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Next.js, React, TypeScript, Tailwind CSS</div>
                         </div>
                         <div class="pb-1">
-                            <div class="text-sm font-medium text-zinc-100">Automatizace</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">n8n, webhooky, systémové integrace</div>
+                            <div class="text-sm font-medium text-zinc-100">Systémový výkon</div>
+                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Vysokovýkonná API, caching, deterministický běh</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Osobní inženýrský profil & Vzdělání a praxe -->
+                <div class="mt-20 pt-16 border-t border-white/[0.06]">
+                    <!-- Úvodní bio (Inženýrský profil) -->
+                    <div class="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal space-y-4">
+                        <p>
+                            Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy zajímalo, jak věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem slaboproudou elektrotechniku v Děčíně, kde jsem pracoval s obvody, signály a hardwarem.
+                        </p>
+                        <p>
+                            Tento inženýrský návyk si přenáším i do programování – nestavím systémy jako černé skříňky. Soustředím se na deterministické chování, spolehlivé databázové architektury a kód s minimální režií. Aktuálně studuji Aplikaci informatiky v přírodních vědách na ČVUT FJFI a paralelně vyvíjím zakázková řešení v Pythonu a Next.js.
+                        </p>
+                        <p>
+                            Když zrovna nekóduji, věnuji se fyzickým projektům a stavbě věcí, na které si lze sáhnout.
+                        </p>
+                    </div>
+
+                    <!-- Strukturované milníky (Kompaktní přehled) -->
+                    <div class="mt-12 space-y-4 max-w-3xl">
+                        <!-- Položka 1: ČVUT FJFI -->
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                2026 — <span class="text-[#FF5500]">Současnost</span>
+                            </div>
+                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                <span class="text-zinc-100 font-medium">ČVUT v Praze, FJFI</span>
+                                <span class="text-zinc-500 mx-1.5">·</span>
+                                <span class="text-zinc-400">Aplikace informatiky v přírodních vědách (Bc.)</span>
+                            </div>
+                        </div>
+
+                        <!-- Položka 2: Nezávislý vývojář -->
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                2026 — <span class="text-[#FF5500]">Současnost</span>
+                            </div>
+                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                <span class="text-zinc-100 font-medium">Nezávislý vývojář</span>
+                                <span class="text-zinc-500 mx-1.5">·</span>
+                                <span class="text-zinc-400">Zakázkový backendový vývoj v Pythonu/FastAPI a Next.js</span>
+                            </div>
+                        </div>
+
+                        <!-- Položka 3: SŠ Děčín -->
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                2022 — 2026
+                            </div>
+                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                <span class="text-zinc-100 font-medium">VOŠ a SPŠ Děčín</span>
+                                <span class="text-zinc-500 mx-1.5">·</span>
+                                <span class="text-zinc-400">Elektrotechnika — Slaboproud, maturitní zkouška</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,18 +253,42 @@
                         Máte projekt nebo dotaz?
                     </div>
                     <div>
-                        <a href="mailto:automatizace.sadek@gmail.com" class="text-xl sm:text-2xl text-zinc-100 hover:text-white transition-colors underline decoration-zinc-700 underline-offset-8 break-all sm:break-normal font-normal">automatizace.sadek@gmail.com</a>
+                        <button 
+                            type="button" 
+                            id="copy-email-btn"
+                            data-email="automatizace.sadek@gmail.com"
+                            class="group relative inline-flex items-center gap-2.5 px-3.5 py-2 rounded-[4px] bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/[0.15] text-zinc-300 hover:text-white transition-all duration-200 font-mono text-xs sm:text-sm select-none cursor-pointer active:scale-[0.97]"
+                            aria-label="Zkopírovat e-mailovou adresu do schránky"
+                        >
+                            <!-- Výchozí stav -->
+                            <span class="copy-default flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#FF5500]"></span>
+                                <span class="font-sans font-medium text-zinc-200">automatizace.sadek@gmail.com</span>
+                                <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </span>
+
+                            <!-- Stav po zkopírování (výchozí skrytý) -->
+                            <span class="copy-success hidden items-center gap-1.5 text-[#FF5500]" aria-live="polite">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-mono text-xs tracking-wide">ZKOPÍROVÁNO</span>
+                            </span>
+                        </button>
                     </div>
                     <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                        <a href="https://github.com/sadekondrej1-svg" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 text-zinc-400 hover:text-white transition-colors group text-sm sm:text-base">
+                        <a href="https://github.com/sadekondrej1-svg" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 text-zinc-400 hover:text-white active:scale-[0.97] transition-all duration-75 group text-sm sm:text-base select-none">
                             <svg class="w-5 h-5 fill-current text-zinc-400 group-hover:text-white transition-colors shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
                             </svg>
                             <span>github.com/sadekondrej1-svg</span>
-                            <span class="text-zinc-600 group-hover:text-zinc-300 transition-colors text-xs">↗</span>
+                            <span class="text-zinc-600 group-hover:text-[#FF5500] transition-colors text-xs">↗</span>
                         </a>
                         <span class="hidden sm:inline text-zinc-600">•</span>
-                        <span class="text-xs sm:text-sm text-zinc-500 font-normal">Děčín, CZ / Remote</span>
+                        <span class="text-xs sm:text-sm text-zinc-500 font-normal"><span class="inline-block w-1.5 h-1.5 bg-[#FF5500] rounded-[1px] mr-1.5 align-middle"></span>Děčín, CZ / Remote</span>
                     </div>
                 </div>
             </div>
@@ -185,6 +300,30 @@
     </main>
 
     <!-- SECTION: FOOTER -->
+    <footer class="w-full border-t border-white/[0.06] bg-[#050507]">
+        <div class="max-w-4xl mx-auto py-12 px-4 sm:px-8">
+            <!-- Horní řádek patičky -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="text-xs text-zinc-500">
+                    © 2026 Ondřej Šádek. Všechna práva vyhrazena.
+                </div>
+                <div>
+                    <a href="#hero" id="back-to-top" class="text-xs text-zinc-500 hover:text-zinc-200 active:scale-[0.97] transition-all duration-75 inline-flex items-center gap-1 group select-none">
+                        <span>Zpět nahoru</span>
+                        <span class="group-hover:-translate-y-0.5 transition-transform duration-200 text-zinc-500 group-hover:text-[#FF5500]">↑</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Spodní řádek (Právní údaje & Lokace) -->
+            <div class="text-[11px] text-zinc-600 tracking-wide mt-4">
+                IČO: 24630390 · Fyzická osoba zapsaná v živnostenském rejstříku · <span class="inline-block w-1.5 h-1.5 bg-[#FF5500] rounded-[1px] mr-1.5 align-middle"></span>Děčín, Česká republika
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inerciální smooth-scroll knihovna Lenis -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
     <!-- Vlastní logika -->
     <script src="src/js/main.js"></script>

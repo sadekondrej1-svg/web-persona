@@ -46,3 +46,4 @@ build/
 .temp/*
 !.temp/.gitkeep
 /*.png
+!/og-image.png
