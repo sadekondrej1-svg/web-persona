@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let nodes = []; // Plochý seznam všech uzlů
         let visibleNodes = []; // Uzly v bezpečné vnitřní zóně pro volbu epicentra
 
-        // Stav seismické rázové vlny
-        let activeWave = null;
+        // Stav seismických rázových vln
+        let activeWaves = [];
         let rafId = null;
         let pulseTimer = null;
         let lastTime = 0;
@@ -145,17 +145,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 visibleNodes = nodes;
             }
 
-            // Reset probíhající vlny a vykreslení klidové sítě
-            activeWave = null;
+            // Reset probíhajících vln a vykreslení klidové sítě
+            activeWaves = [];
             if (rafId) {
                 cancelAnimationFrame(rafId);
                 rafId = null;
             }
+            clearTimeout(pulseTimer);
             drawStaticCadGrid();
 
             // Přeplánování příštího seismického pulsu (pokud není zapnut reduced-motion)
             if (!motionQuery.matches) {
-                scheduleNextPulse(1400); // První puls krátce po načtení / změně velikosti
+                scheduleNextPulse(1000); // První puls krátce po načtení / změně velikosti
             }
         }
 
@@ -198,12 +199,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.stroke();
         }
 
-        // Naplánování příštího seismického pulsu (každých cca 6 až 10 sekund)
+        // Naplánování příštího seismického pulsu (každých cca 3 až 5 sekund)
         function scheduleNextPulse(delay) {
             clearTimeout(pulseTimer);
             if (motionQuery.matches) return;
 
-            const waitTime = typeof delay === 'number' ? delay : (6000 + Math.random() * 4000);
+            const waitTime = typeof delay === 'number' ? delay : (3000 + Math.random() * 2000);
             pulseTimer = setTimeout(triggerShockwave, waitTime);
         }
 
@@ -213,24 +214,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isMobile = width < 768;
             const epicenterNode = visibleNodes[Math.floor(Math.random() * visibleNodes.length)];
+            const waveWidth = isMobile ? 44 : 64;
 
-            activeWave = {
-                epicenterX: epicenterNode.originX,
-                epicenterY: epicenterNode.originY,
-                radius: 0,
-                maxRadius: isMobile ? 260 : 320, // poloměr dosahu cca 260–340 px
-                speed: isMobile ? 210 : 250,      // rychlost šíření čela v px/s
-                waveWidth: isMobile ? 42 : 54,    // šířka energetického čela
-                energy: 1.0
-            };
+            // Dynamický výpočet maximálního poloměru k nejvzdálenějšímu rohu canvasu
+            const maxCornerDist = Math.hypot(
+                Math.max(epicenterNode.originX, width - epicenterNode.originX),
+                Math.max(epicenterNode.originY, height - epicenterNode.originY)
+            );
 
-            // Počáteční energetický akcent v epicentru
-            epicenterNode.highlight = 1.0;
+            // Maximálně 3 současné vlny pro zachování čistého inženýrského vyznění a stability
+            if (activeWaves.length < 3) {
+                activeWaves.push({
+                    epicenterX: epicenterNode.originX,
+                    epicenterY: epicenterNode.originY,
+                    radius: 0,
+                    maxRadius: maxCornerDist + waveWidth, // vlna pokračuje až do úplného opuštění rohů
+                    speed: isMobile ? 420 : 580,          // rychlost přizpůsobená větší dráze
+                    waveWidth: waveWidth,
+                    energy: 1.0
+                });
 
+                // Ostrý LED svit v epicentru
+                epicenterNode.highlight = 1.0;
+            }
+
+            // Probudit animační smyčku, pokud spí
             if (!rafId) {
                 lastTime = performance.now();
                 rafId = requestAnimationFrame(render);
             }
+
+            // Automatické naplánování dalšího pulsu za 3–5 sekund
+            scheduleNextPulse();
         }
 
         // Hlavní renderovací a fyzikální smyčka (probouzí se jen při pulsu a usíná v klidu)
@@ -241,48 +256,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isMobile = width < 768;
 
-            // 1. Aktualizace seismické vlny
-            if (activeWave) {
-                activeWave.radius += activeWave.speed * dt;
-                // Exponenciálně tlumený pokles energie od 1 k 0
-                activeWave.energy = Math.pow(Math.max(0, 1 - activeWave.radius / activeWave.maxRadius), 1.25);
+            // 1. Aktualizace aktivních seismických vln
+            for (let w = activeWaves.length - 1; w >= 0; w--) {
+                const wave = activeWaves[w];
+                wave.radius += wave.speed * dt;
+                const progress = Math.min(1, wave.radius / wave.maxRadius);
+                // Pozvolný útlum: vlna zůstává kineticky aktivní a zřetelná až k vnějším okrajům
+                wave.energy = Math.max(0, 1 - progress * 0.72);
 
-                if (activeWave.radius >= activeWave.maxRadius || activeWave.energy <= 0.005) {
-                    activeWave = null;
+                if (wave.radius >= wave.maxRadius) {
+                    activeWaves.splice(w, 1);
                 }
             }
 
-            // 2. Kinetické působení vlny a mechanické tlumení (Spring Physics & Damping)
+            // 2. Kinetické působení vln a mechanické tlumení (Spring Physics & Damping)
             let maxDisp = 0;
             let maxHl = 0;
+            const waveCount = activeWaves.length;
 
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
 
-                // Působení čela rázové vlny
-                if (activeWave && activeWave.energy > 0.008) {
-                    const dx = node.originX - activeWave.epicenterX;
-                    const dy = node.originY - activeWave.epicenterY;
-                    const dist = Math.hypot(dx, dy);
-                    const diff = dist - activeWave.radius;
+                // Působení všech běžících vln na daný uzel
+                if (waveCount > 0) {
+                    for (let w = 0; w < waveCount; w++) {
+                        const wave = activeWaves[w];
+                        const dx = node.originX - wave.epicenterX;
+                        const dy = node.originY - wave.epicenterY;
+                        const dist = Math.hypot(dx, dy);
+                        const diff = dist - wave.radius;
 
-                    if (Math.abs(diff) < activeWave.waveWidth && dist > 2) {
-                        const normDist = diff / activeWave.waveWidth; // -1 až 1
-                        const waveIntensity = Math.cos(normDist * (Math.PI / 2)); // hladký kosinusový profil čela
+                        if (Math.abs(diff) < wave.waveWidth && dist > 2) {
+                            const normDist = diff / wave.waveWidth; // -1 až 1
+                            const waveIntensity = Math.cos(normDist * (Math.PI / 2)); // hladký kosinusový profil čela
 
-                        if (waveIntensity > 0) {
-                            // Radiální vytlačení od epicentra
-                            const pushMagnitude = waveIntensity * activeWave.energy * (isMobile ? 2.6 : 3.4);
-                            const nx = dx / dist;
-                            const ny = dy / dist;
+                            if (waveIntensity > 0) {
+                                // Radiální vytlačení od epicentra
+                                const pushMagnitude = waveIntensity * wave.energy * (isMobile ? 2.8 : 4.4);
+                                const nx = dx / dist;
+                                const ny = dy / dist;
 
-                            node.vx += nx * pushMagnitude;
-                            node.vy += ny * pushMagnitude;
+                                node.vx += nx * pushMagnitude;
+                                node.vy += ny * pushMagnitude;
 
-                            // Světelný náboj v čele vlny
-                            const lightIntensity = waveIntensity * activeWave.energy;
-                            if (lightIntensity > node.highlight) {
-                                node.highlight = lightIntensity;
+                                // Světelný náboj v čele vlny (rozsvěcuje POUZE křížek / mikrobod)
+                                const lightIntensity = waveIntensity * wave.energy;
+                                if (lightIntensity > node.highlight) {
+                                    node.highlight = lightIntensity;
+                                }
                             }
                         }
                     }
@@ -310,87 +331,57 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. Vykreslení rámu
             ctx.clearRect(0, 0, width, height);
 
-            // A) Linky sítě spojené skrze reálné (kineticky deformované) pozice uzlů
+            // A) Neutrální monochromatické linky sítě (žádné barevné rozsvěcování linek)
             ctx.strokeStyle = GRID_STROKE;
             ctx.lineWidth = 1;
+            ctx.beginPath();
 
-            // Horizontální křivky/linky
+            // Horizontální křivky/linky v jedné dávce
             for (let r = 0; r < rows; r++) {
-                ctx.beginPath();
                 ctx.moveTo(grid[r][0].x, grid[r][0].y);
                 for (let c = 1; c < cols; c++) {
                     ctx.lineTo(grid[r][c].x, grid[r][c].y);
                 }
-                ctx.stroke();
             }
 
-            // Vertikální křivky/linky
+            // Vertikální křivky/linky v jedné dávce
             for (let c = 0; c < cols; c++) {
-                ctx.beginPath();
                 ctx.moveTo(grid[0][c].x, grid[0][c].y);
                 for (let r = 1; r < rows; r++) {
                     ctx.lineTo(grid[r][c].x, grid[r][c].y);
                 }
-                ctx.stroke();
             }
 
-            // B) Světelný akcent na linkách v zóně čela vlny (oranžové prosvitnutí linky)
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols - 1; c++) {
-                    const n1 = grid[r][c];
-                    const n2 = grid[r][c + 1];
-                    const segHl = (n1.highlight + n2.highlight) * 0.5;
-                    if (segHl > 0.04) {
-                        ctx.strokeStyle = `rgba(255, 85, 0, ${(segHl * 0.45).toFixed(3)})`;
-                        ctx.lineWidth = 1.2;
-                        ctx.beginPath();
-                        ctx.moveTo(n1.x, n1.y);
-                        ctx.lineTo(n2.x, n2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
+            ctx.stroke();
 
-            for (let c = 0; c < cols; c++) {
-                for (let r = 0; r < rows - 1; r++) {
-                    const n1 = grid[r][c];
-                    const n2 = grid[r + 1][c];
-                    const segHl = (n1.highlight + n2.highlight) * 0.5;
-                    if (segHl > 0.04) {
-                        ctx.strokeStyle = `rgba(255, 85, 0, ${(segHl * 0.45).toFixed(3)})`;
-                        ctx.lineWidth = 1.2;
-                        ctx.beginPath();
-                        ctx.moveTo(n1.x, n1.y);
-                        ctx.lineTo(n2.x, n2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            // C) CAD zaměřovací křížky (+) na uzlech
-            // 1. Běžné křížky s nízkou/nulovou luminiscencí (jedna dávka pro maximální výkon)
+            // B) CAD zaměřovací křížky (+) na uzlech (efekt mikroskopických LED diod)
+            // 1. Klidové křížky (tlumená monochromatická bílá, vykresleno v jedné dávce)
             ctx.strokeStyle = CROSS_STROKE;
             ctx.lineWidth = 1;
             ctx.beginPath();
 
             for (let i = 0; i < nodes.length; i++) {
                 const n = nodes[i];
-                if (n.highlight <= 0.04) {
+                if (n.highlight <= 0.03) {
                     ctx.moveTo(n.x - CROSS_ARM, n.y);
                     ctx.lineTo(n.x + CROSS_ARM, n.y);
                     ctx.moveTo(n.x, n.y - CROSS_ARM);
                     ctx.lineTo(n.x, n.y + CROSS_ARM);
                 }
             }
+
             ctx.stroke();
 
-            // 2. Zvýrazněné křížky na čele vlny s oranžovým/bílým technickým svitem
+            // 2. Aktivní rozsvícené křížky (STRIKTNĚ v uzlech: sytá oranžová #FF5500 + 2px mikrobod)
             for (let i = 0; i < nodes.length; i++) {
                 const n = nodes[i];
-                if (n.highlight > 0.04) {
-                    const arm = CROSS_ARM + n.highlight * 0.8;
-                    const crossAlpha = Math.min(1, 0.2 + n.highlight * 0.8);
-                    ctx.strokeStyle = `rgba(255, 120, 50, ${crossAlpha.toFixed(3)})`;
+                if (n.highlight > 0.03) {
+                    const hl = n.highlight;
+                    const arm = CROSS_ARM + hl * 0.5; // subtilní expanze 2.5px -> 3.0px
+                    const alpha = Math.min(1, 0.25 + hl * 0.75);
+
+                    // Ostrý CAD křížek ve výrazném Safety Orange (#FF5500)
+                    ctx.strokeStyle = `rgba(255, 85, 0, ${alpha.toFixed(3)})`;
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
                     ctx.moveTo(n.x - arm, n.y);
@@ -399,44 +390,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.lineTo(n.x, n.y + arm);
                     ctx.stroke();
 
-                    // Miniaturní zářivý středový bod v uzlu
-                    ctx.fillStyle = `rgba(255, 255, 255, ${(n.highlight * 0.85).toFixed(3)})`;
-                    ctx.fillRect(n.x - 0.75, n.y - 0.75, 1.5, 1.5);
+                    // Centrální 2px LED mikrobod s intenzivním jádrem
+                    const dotAlpha = Math.min(1, 0.4 + hl * 0.6).toFixed(3);
+                    ctx.fillStyle = hl > 0.45 ? `rgba(255, 235, 215, ${dotAlpha})` : `rgba(255, 85, 0, ${dotAlpha})`;
+                    ctx.fillRect(n.x - 1, n.y - 1, 2, 2);
                 }
             }
 
-            // D) Světelné efekty čela vlny: Počáteční výboj v epicentru a postupující prstenec
-            if (activeWave) {
-                // Energetický záblesk v epicentru (plynule dohasíná při expanzi do 75 px)
-                if (activeWave.radius < 75) {
-                    const burstRatio = activeWave.radius / 75;
-                    const burstAlpha = (1 - burstRatio) * 0.55;
-                    const burstGrad = ctx.createRadialGradient(
-                        activeWave.epicenterX, activeWave.epicenterY, 0,
-                        activeWave.epicenterX, activeWave.epicenterY, 26
-                    );
-                    burstGrad.addColorStop(0, `rgba(255, 85, 0, ${burstAlpha.toFixed(3)})`);
-                    burstGrad.addColorStop(0.35, `rgba(255, 85, 0, ${(burstAlpha * 0.4).toFixed(3)})`);
-                    burstGrad.addColorStop(1, 'rgba(255, 85, 0, 0)');
-
-                    ctx.fillStyle = burstGrad;
-                    ctx.beginPath();
-                    ctx.arc(activeWave.epicenterX, activeWave.epicenterY, 26, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                // Jemný světelný prstenec na čele seismické rázové vlny
-                if (activeWave.radius > 6 && activeWave.energy > 0.01) {
-                    ctx.beginPath();
-                    ctx.arc(activeWave.epicenterX, activeWave.epicenterY, activeWave.radius, 0, Math.PI * 2);
-                    ctx.strokeStyle = `rgba(255, 85, 0, ${(activeWave.energy * 0.22).toFixed(3)})`;
-                    ctx.lineWidth = Math.max(1, activeWave.waveWidth * 0.22 * activeWave.energy);
-                    ctx.stroke();
-                }
-            }
-
-            // 4. Detekce návratu do absolutního geometrického klidu a uspání smyčky
-            if (!activeWave && maxDisp < 0.05 && maxHl < 0.005) {
+            // C) Detekce návratu do absolutního geometrického klidu a uspání smyčky
+            if (activeWaves.length === 0 && maxDisp < 0.05 && maxHl < 0.005) {
                 // Přesné ukotvení na původní souřadnice
                 for (let i = 0; i < nodes.length; i++) {
                     const n = nodes[i];
@@ -451,13 +413,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 drawStaticCadGrid();
                 cancelAnimationFrame(rafId);
                 rafId = null;
-
-                // Naplánování příštího seismického pulsu (šetří CPU i GPU)
-                scheduleNextPulse();
                 return;
             }
 
-            // Pokračování ve vykreslování aktivního pulsu / dojezdu pružin
+            // Pokračování ve vykreslování aktivních vln / dojezdu pružin
             rafId = requestAnimationFrame(render);
         }
 
@@ -470,10 +429,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         cancelAnimationFrame(rafId);
                         rafId = null;
                     }
-                    activeWave = null;
+                    activeWaves = [];
                     drawStaticCadGrid();
                 } else {
-                    scheduleNextPulse(2000);
+                    scheduleNextPulse(1000);
                 }
             });
         }
@@ -581,5 +540,83 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initSpatialReveal();
+
+    // ----------------------------------------------------------------------
+    // 6. Autentická simulace CAD Telemetrie Pipeline (#projects terminal)
+    // ----------------------------------------------------------------------
+    function initTerminalSimulation() {
+        const simBtn = document.getElementById('run-terminal-sim');
+        const terminalScreen = document.getElementById('terminal-screen');
+        if (!simBtn || !terminalScreen) return;
+
+        const DESKTOP_LOG_ROWS = [
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Discovery:</span> ARES Search NACE 25110 | Nalezen: <span class="text-[#d4d4d8]">GELSO, s.r.o.</span> (IČO: 25321480)',
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Financials:</span> Justice.cz staženo PDF -&gt; Gemini 2.5 Flash Lite extrahuje výkazy...',
+            '<span class="text-[#ffffff] font-semibold">[OK]  </span> <span class="text-[#52525b]">Financials:</span> <span class="text-[#ffffff] font-semibold">QUALIFIED ✓</span> | Rev=<span class="text-[#ffffff]">31.6M</span> | Equity=<span class="text-[#ffffff]">39.2M</span> | VH=<span class="text-[#ffffff]">0.0M</span> (2024)',
+            '<span class="text-[#fbbf24] font-semibold">[WARN]</span> <span class="text-[#52525b]">Financials:</span> TENTE s.r.o. -&gt; <span class="text-[#fbbf24] font-semibold">DISQUALIFIED</span> (tržby pod limitem 18 mil. Kč)',
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Enrichment:</span> Doména gelso.cz ověřena shodou IČO -&gt; 1 jednatel, 1 tel, 1 email.',
+            '<span class="text-[#ffffff] font-semibold">[DONE]</span> <span class="text-[#52525b]">Export:</span> M&amp;A Excel vygenerován: <span class="text-[#d4d4d8]">output/Export_MA_2026.xlsx</span> (4 leady)'
+        ];
+
+        const MOBILE_LOG_ROWS = [
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Discovery:</span> ARES NACE 25110 -&gt; <span class="text-[#d4d4d8]">GELSO s.r.o.</span> (IČO 25321480)',
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Justice.cz:</span> Staženo PDF -&gt; Gemini 2.5 extrakce',
+            '<span class="text-[#ffffff] font-semibold">[OK]  </span> <span class="text-[#52525b]">Financials:</span> <span class="text-[#ffffff] font-semibold">QUALIFIED ✓</span> | Tržby <span class="text-[#ffffff]">31.6M</span> (2024)',
+            '<span class="text-[#fbbf24] font-semibold">[WARN]</span> TENTE s.r.o. -&gt; <span class="text-[#fbbf24] font-semibold">DISQUALIFIED</span> (tržby &lt; 18M)',
+            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Enrichment:</span> gelso.cz ověřeno -&gt; 1 jednatel, kontakt OK',
+            '<span class="text-[#ffffff] font-semibold">[DONE]</span> <span class="text-[#52525b]">Export:</span> M&amp;A Excel vygenerován (4 leady)'
+        ];
+
+        let isRunning = false;
+
+        simBtn.addEventListener('click', () => {
+            if (isRunning) return;
+            isRunning = true;
+
+            const isMobile = window.innerWidth < 640;
+            const logRows = isMobile ? MOBILE_LOG_ROWS : DESKTOP_LOG_ROWS;
+
+            const labelEl = simBtn.querySelector('.sim-btn-label') || simBtn;
+            labelEl.innerHTML = '<span class="sm:hidden">...</span><span class="hidden sm:inline">Zpracovávám...</span>';
+            simBtn.disabled = true;
+
+            // Ponechat inženýrský příkazový prompt
+            const promptCmd = isMobile ? 'python main.py' : 'python main.py --config=mna_search.json';
+            terminalScreen.innerHTML = `<div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span class="text-[#FF5500] font-semibold">$</span></span> <span class="text-[#d4d4d8]">${promptCmd}</span></div>`;
+
+            let currentStep = 0;
+
+            function outputNextLine() {
+                if (currentStep < logRows.length) {
+                    const row = document.createElement('div');
+                    row.className = 'terminal-row';
+                    row.innerHTML = logRows[currentStep];
+                    terminalScreen.appendChild(row);
+                    terminalScreen.scrollTop = terminalScreen.scrollHeight;
+
+                    currentStep++;
+                    setTimeout(outputNextLine, 300);
+                } else {
+                    // Dokončení pipeline - signální oranžový stav
+                    const finishRow = document.createElement('div');
+                    finishRow.className = 'terminal-row pt-2 text-[#FF5500] font-semibold flex items-center gap-2 border-t border-white/[0.06]';
+                    const finishText = isMobile ? '● Target reached (hotovo)' : '● Pipeline finished: Cílový počet leadů splněn.';
+                    finishRow.innerHTML = `<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>${finishText}`;
+                    terminalScreen.appendChild(finishRow);
+                    terminalScreen.scrollTop = terminalScreen.scrollHeight;
+
+                    // Odblokovat tlačítko a nabídnout možnost znovu spustit
+                    simBtn.disabled = false;
+                    labelEl.innerHTML = '<span class="sm:hidden">↺ Znovu</span><span class="hidden sm:inline">Spustit znovu ↺</span>';
+                    isRunning = false;
+                }
+            }
+
+            setTimeout(outputNextLine, 300);
+        });
+    }
+
+    initTerminalSimulation();
 });
+
 
