@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
         // Vizuální parametry CAD mřížky
-        const GRID_STROKE = 'rgba(255, 255, 255, 0.055)'; // vodicí linky s nízkou opacitou (0.05–0.07)
-        const CROSS_STROKE = 'rgba(255, 255, 255, 0.20)'; // klidové CAD křížky (cca 0.2)
+        let gridStroke = 'rgba(255, 255, 255, 0.055)'; // vodicí linky
+        let crossStroke = 'rgba(255, 255, 255, 0.20)'; // klidové CAD křížky
         const CROSS_ARM = 2.5; // délka ramene křížku 2.5px (celková velikost cca 5px)
 
         let width = 0;
@@ -86,23 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastTime = 0;
 
         function resizeGrid() {
-            const rect = heroSection.getBoundingClientRect();
-            width = Math.floor(rect.width);
-            height = Math.floor(rect.height);
+            width = Math.floor(window.innerWidth);
+            height = Math.floor(window.innerHeight || document.documentElement.clientHeight || 800);
 
             if (width <= 0 || height <= 0) return;
 
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
             canvas.width = Math.floor(width * dpr);
             canvas.height = Math.floor(height * dpr);
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
+            canvas.style.width = '100vw';
+            canvas.style.height = '100vh';
 
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            // Responzivní rozteč buněk: na mobilech (<768px) cca 26px, na desktopu cca 48px
+            // Responzivní rozteč buněk a kontrast na mobilu:
             const isMobile = width < 768;
             spacing = isMobile ? 26 : 48;
+            gridStroke = isMobile ? 'rgba(255, 255, 255, 0.075)' : 'rgba(255, 255, 255, 0.055)';
+            crossStroke = isMobile ? 'rgba(255, 255, 255, 0.26)' : 'rgba(255, 255, 255, 0.20)';
 
             cols = Math.ceil(width / spacing) + 2;
             rows = Math.ceil(height / spacing) + 2;
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!grid.length || !nodes.length) return;
 
             // 1. Rovné vodicí linky
-            ctx.strokeStyle = GRID_STROKE;
+            ctx.strokeStyle = gridStroke;
             ctx.lineWidth = 1;
             ctx.beginPath();
 
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.stroke();
 
             // 2. Tenké CAD křížky (+) na průsečících
-            ctx.strokeStyle = CROSS_STROKE;
+            ctx.strokeStyle = crossStroke;
             ctx.lineWidth = 1;
             ctx.beginPath();
 
@@ -332,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.clearRect(0, 0, width, height);
 
             // A) Neutrální monochromatické linky sítě (žádné barevné rozsvěcování linek)
-            ctx.strokeStyle = GRID_STROKE;
+            ctx.strokeStyle = gridStroke;
             ctx.lineWidth = 1;
             ctx.beginPath();
 
@@ -356,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // B) CAD zaměřovací křížky (+) na uzlech (efekt mikroskopických LED diod)
             // 1. Klidové křížky (tlumená monochromatická bílá, vykresleno v jedné dávce)
-            ctx.strokeStyle = CROSS_STROKE;
+            ctx.strokeStyle = crossStroke;
             ctx.lineWidth = 1;
             ctx.beginPath();
 
@@ -438,14 +439,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Responzivní přizpůsobení při změně velikosti okna
-        if (typeof ResizeObserver !== 'undefined') {
-            const resizeObserver = new ResizeObserver(() => {
-                resizeGrid();
-            });
-            resizeObserver.observe(heroSection);
-        } else {
-            window.addEventListener('resize', resizeGrid, { passive: true });
-        }
+        window.addEventListener('resize', resizeGrid, { passive: true });
+        window.addEventListener('orientationchange', resizeGrid, { passive: true });
+
+        // Uspání animace, pokud je okno neaktivní (šetří GPU a baterii)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearTimeout(pulseTimer);
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+            } else if (!motionQuery.matches && activeWaves.length === 0 && !rafId) {
+                scheduleNextPulse(1000);
+            }
+        });
 
         // Inicializace
         resizeGrid();
@@ -526,14 +534,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('is-revealed');
+                    requestAnimationFrame(() => {
+                        entry.target.classList.add('is-revealed');
+                    });
                     obs.unobserve(entry.target);
                 }
             });
         }, {
             root: null,
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.15
+            rootMargin: '0px 0px -30px 0px',
+            threshold: 0.05
         });
 
         revealElements.forEach((el) => observer.observe(el));

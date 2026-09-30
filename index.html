@@ -80,6 +80,11 @@
     <!-- Fyzikální textura materiálu (Matný kov / Micro-grain) -->
     <div class="bg-noise pointer-events-none fixed inset-0 z-50" aria-hidden="true"></div>
 
+    <!-- Autonomní hybridní seismický puls v CAD síti (Kinetics & Luminescence Shockwave) -->
+    <canvas id="hero-warp-canvas"
+        class="hero-grid-fade anim-cinematic-bg fixed top-0 left-0 w-screen h-screen pointer-events-none z-0"
+        aria-hidden="true"></canvas>
+
     <!-- SECTION: NAVBAR (Frosted Glass) -->
     <header
         class="fixed top-0 left-0 right-0 z-50 bg-[#070709]/75 backdrop-blur-md border-b border-white/[0.06] anim-cinematic-nav">
@@ -116,38 +121,18 @@
     <main class="w-full relative z-10">
         <!-- SECTION: HERO (100dvh) -->
         <section id="hero"
-            class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center px-4 sm:px-6 overflow-hidden">
-            <!-- Autonomní hybridní seismický puls v CAD síti (Kinetics & Luminescence Shockwave) -->
-            <canvas id="hero-warp-canvas"
-                class="hero-grid-fade anim-cinematic-bg absolute inset-0 w-full h-full pointer-events-none overflow-hidden z-[1]"
-                aria-hidden="true"></canvas>
-
+            class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center px-4 sm:px-6 pt-16 pb-12 sm:pt-20 sm:pb-16 overflow-hidden">
             <div class="relative z-10 w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center">
 
                 <!-- Výrazné prostorové nasvícení (Ambient Glow) s pomalým dechem a plynulým filmovým náběhem -->
                 <div class="anim-cinematic-bg pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10 flex items-center justify-center"
                     aria-hidden="true">
                     <div
-                        class="ambient-breathing absolute left-1/2 top-1/2 w-[260px] h-[180px] sm:w-[600px] sm:h-[350px] bg-gradient-to-b from-white/[0.14] to-transparent rounded-full blur-[60px] sm:blur-[100px]">
+                        class="ambient-breathing absolute left-1/2 top-1/2 w-[300px] h-[400px] sm:w-[600px] sm:h-[350px] bg-gradient-to-b from-white/[0.14] to-transparent rounded-full blur-[60px] sm:blur-[100px]">
                     </div>
                     <div
-                        class="ambient-breathing absolute left-1/2 top-1/2 w-[160px] h-[100px] sm:w-[320px] sm:h-[180px] bg-[#FF5500]/[0.02] rounded-full blur-[40px] sm:blur-[70px]">
+                        class="ambient-breathing absolute left-1/2 top-1/2 w-[200px] h-[260px] sm:w-[320px] sm:h-[180px] bg-[#FF5500]/[0.02] rounded-full blur-[40px] sm:blur-[70px]">
                     </div>
-                </div>
-
-                <!-- Featured Project Pill (CAD Glass Badge) -->
-                <div class="animate-cinematic anim-delay-100 mb-5 sm:mb-6">
-                    <a href="#projects" class="hero-project-badge group select-none"
-                        aria-label="Přejít na projekt ARES Lead Intelligence Pipeline">
-                        <!-- Pulzující tečka vlevo -->
-                        <span class="hero-badge-dot" aria-hidden="true"></span>
-                        <!-- Kategorie / prefix -->
-                        <span class="hero-badge-tag hidden sm:inline">CASE STUDY //</span>
-                        <!-- Název projektu -->
-                        <span class="hero-badge-title">ARES Lead Intelligence Pipeline</span>
-                        <!-- Šipka vpravo -->
-                        <span class="hero-badge-arrow" aria-hidden="true">↗</span>
-                    </a>
                 </div>
 
                 <!-- 1. Hlavní třířádkový nadpis: filmový náběh s optickým zaostřením po řádcích (100ms, 160ms, 220ms) -->
@@ -180,10 +165,10 @@
                     </a>
                 </div>
             </div>
-        </section>
 
-        <!-- Dělicí linka do ztracena (Gradient Divider) -->
-        <div class="divider-fade" aria-hidden="true"></div>
+            <!-- Plynulá přechodová clona na rozhraní sekcí (Bottom Fade Overlay) -->
+            <div class="hero-bottom-fade" aria-hidden="true"></div>
+        </section>
 
         <!-- SECTION: ABOUT (INŽENÝRSKÝ PROFIL) -->
         <section id="about" class="w-full bg-[#070709] py-20 sm:py-28">
@@ -410,8 +395,8 @@
                         </div>
                         <div class="terminal-row text-[#71717a]"><span
                                 class="text-[#FF5500] font-semibold">[READY]</span> <span
-                                class="hidden sm:inline">Pipeline v pohotovostním režimu. Stiskněte [Spustit simulaci
-                                ▶]</span><span class="sm:hidden">Připraveno ke spuštění.</span></div>
+                                class="hidden sm:inline">Pipeline v pohotovostním režimu. Stiskněte [Spustit simulaci ▶]</span><span
+                                class="sm:hidden">Připraveno ke spuštění.</span></div>
                     </div>
                 </div>
             </div>
@@ -477,8 +462,11 @@
     </main>
 
     <!-- SECTION: FOOTER -->
-    <footer class="w-full border-t border-white/[0.06] bg-[#050507]">
-        <div class="max-w-4xl mx-auto py-12 px-4 sm:px-8 reveal-spatial">
+    <footer class="relative w-full bg-transparent overflow-hidden">
+        <!-- Plynulý přechod ze tmy do mřížky v patičce -->
+        <div class="footer-top-fade" aria-hidden="true"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-8 reveal-spatial">
             <!-- Horní řádek patičky -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="text-xs text-zinc-500">
