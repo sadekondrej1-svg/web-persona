@@ -53,46 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------------------------
-    // 2. Interaktivní reflektor na kurzor (Hero ambient spotlight)
+    // 2. Autonomní hybridní seismický puls v CAD síti (Kinetics & Luminescence Shockwave)
     // ----------------------------------------------------------------------
-    const hero = document.getElementById('hero');
-    if (!hero) return;
-
-    // Interaktivní reflektor na kurzor: pouze pro zařízení s jemným ukazatelem (myš)
-    // Na dotykových zařízeních zůstává světlo staticky uprostřed bez JS posluchače
-    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
-    if (hasFinePointer) {
-        let rafId = null;
-
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            const x = Math.round(e.clientX - rect.left);
-            const y = Math.round(e.clientY - rect.top);
-
-            if (!rafId) {
-                rafId = requestAnimationFrame(() => {
-                    hero.style.setProperty('--mouse-x', `${x}px`);
-                    hero.style.setProperty('--mouse-y', `${y}px`);
-                    rafId = null;
-                });
-            }
-        });
-
-        hero.addEventListener('mouseleave', () => {
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-            }
-            // Návrat do klidového výchozího stavu
-            hero.style.removeProperty('--mouse-x');
-            hero.style.removeProperty('--mouse-y');
-        });
-    }
-
-    // ----------------------------------------------------------------------
-    // 3. Interaktivní topologická deformace mřížky (Hero Mesh / Warp Grid)
-    // ----------------------------------------------------------------------
-    function initHeroWarpGrid() {
+    function initCadSeismicPulseGrid() {
         const canvas = document.getElementById('hero-warp-canvas');
         const heroSection = document.getElementById('hero');
         if (!canvas || !heroSection) return;
@@ -100,31 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d', { alpha: true });
         if (!ctx) return;
 
-        const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-        // Fyzikální a geometrické parametry mřížky (dynamicky kalibrované dle viewportu)
-        let spacing = 48; // dynamická rozteč: 26px pod 768px, 48px od 768px výše
-        let influenceRadius = 320; // velkorysý poloměr gravitační deformace (280–340 px)
-        let influenceRadiusSq = influenceRadius * influenceRadius;
-        let maxDisplacement = 19; // plynulá špičková výchylka rozprostřená do šířky
-        let baseLineWidth = 1.35; // stabilní tloušťka linky pro ostrost na Retina/HiDPI
-        const SPRING_TENSION = 0.11; // tuhost elastické sítě pro táhlé zakřivení
-        const DAMPING = 0.85; // plynulé tlumení oscilací
-        const BASE_STROKE = 'rgba(255, 255, 255, 0.15)'; // zvýšený kontrast linek
+        // Vizuální parametry CAD mřížky
+        const GRID_STROKE = 'rgba(255, 255, 255, 0.055)'; // vodicí linky s nízkou opacitou (0.05–0.07)
+        const CROSS_STROKE = 'rgba(255, 255, 255, 0.20)'; // klidové CAD křížky (cca 0.2)
+        const CROSS_ARM = 2.5; // délka ramene křížku 2.5px (celková velikost cca 5px)
 
         let width = 0;
         let height = 0;
+        let spacing = 48;
         let cols = 0;
         let rows = 0;
-        let offsetX = 0;
-        let offsetY = 0;
-        let nodes = [];
+        let grid = []; // 2D matice [r][c] pro plynulé propojení sousedních uzlů
+        let nodes = []; // Plochý seznam všech uzlů
+        let visibleNodes = []; // Uzly v bezpečné vnitřní zóně pro volbu epicentra
 
-        let mouseX = -9999;
-        let mouseY = -9999;
-        let isMouseInside = false;
-        let isLoopRunning = false;
+        // Stav seismické rázové vlny
+        let activeWave = null;
         let rafId = null;
+        let pulseTimer = null;
+        let lastTime = 0;
 
         function resizeGrid() {
             const rect = heroSection.getBoundingClientRect();
@@ -141,248 +100,385 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            // Dynamická rozteč: na mobilech (<768px) jemnější a hustší rastr (26px), na desktopu 48px
+            // Responzivní rozteč buněk: na mobilech (<768px) cca 26px, na desktopu cca 48px
             const isMobile = width < 768;
             spacing = isMobile ? 26 : 48;
-            baseLineWidth = isMobile ? 1.05 : 1.35;
-            influenceRadius = isMobile ? 220 : 320; // velkorysý dosah (cca 7 buněk v poloměru)
-            influenceRadiusSq = influenceRadius * influenceRadius;
-            maxDisplacement = isMobile ? 13 : 19; // mírnější špičková síla rozprostřená do šířky
 
-            // Generování uzlů s přesahy přes okraje plátna
             cols = Math.ceil(width / spacing) + 2;
             rows = Math.ceil(height / spacing) + 2;
 
-            offsetX = (width - (cols - 1) * spacing) / 2;
-            offsetY = (height - (rows - 1) * spacing) / 2;
+            const offsetX = (width - (cols - 1) * spacing) / 2;
+            const offsetY = (height - (rows - 1) * spacing) / 2;
 
-            nodes = new Array(cols * rows);
+            grid = [];
+            nodes = [];
+            visibleNodes = [];
+
             for (let r = 0; r < rows; r++) {
-                const rowY = offsetY + r * spacing;
-                const rowOffset = r * cols;
+                const row = [];
+                const y = offsetY + r * spacing;
                 for (let c = 0; c < cols; c++) {
-                    const colX = offsetX + c * spacing;
-                    nodes[rowOffset + c] = {
-                        originX: colX,
-                        originY: rowY,
-                        x: colX,
-                        y: rowY,
+                    const x = offsetX + c * spacing;
+                    const node = {
+                        originX: x,
+                        originY: y,
+                        x: x,
+                        y: y,
                         vx: 0,
-                        vy: 0
+                        vy: 0,
+                        highlight: 0,
+                        r: r,
+                        c: c
                     };
+                    row.push(node);
+                    nodes.push(node);
+
+                    // Uzly pro výběr epicentra (s bezpečným odsazením od okrajů zobrazení)
+                    if (x >= 40 && x <= width - 40 && y >= 40 && y <= height - 40) {
+                        visibleNodes.push(node);
+                    }
                 }
+                grid.push(row);
             }
 
-            renderStatic();
-            if (isMouseInside && isFinePointer) {
-                startLoop();
+            if (!visibleNodes.length) {
+                visibleNodes = nodes;
+            }
+
+            // Reset probíhající vlny a vykreslení klidové sítě
+            activeWave = null;
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+            drawStaticCadGrid();
+
+            // Přeplánování příštího seismického pulsu (pokud není zapnut reduced-motion)
+            if (!motionQuery.matches) {
+                scheduleNextPulse(1400); // První puls krátce po načtení / změně velikosti
             }
         }
 
-        function renderStatic() {
+        // Vykreslení klidové rovné CAD mřížky
+        function drawStaticCadGrid() {
             ctx.clearRect(0, 0, width, height);
-            ctx.strokeStyle = BASE_STROKE;
-            ctx.lineWidth = baseLineWidth;
+
+            if (!grid.length || !nodes.length) return;
+
+            // 1. Rovné vodicí linky
+            ctx.strokeStyle = GRID_STROKE;
+            ctx.lineWidth = 1;
             ctx.beginPath();
 
-            // Horizontální linie
             for (let r = 0; r < rows; r++) {
-                const rowOffset = r * cols;
-                ctx.moveTo(nodes[rowOffset].x, nodes[rowOffset].y);
-                for (let c = 1; c < cols; c++) {
-                    const node = nodes[rowOffset + c];
-                    ctx.lineTo(node.x, node.y);
-                }
+                ctx.moveTo(grid[r][0].originX, grid[r][0].originY);
+                ctx.lineTo(grid[r][cols - 1].originX, grid[r][cols - 1].originY);
             }
 
-            // Vertikální linie
             for (let c = 0; c < cols; c++) {
-                ctx.moveTo(nodes[c].x, nodes[c].y);
-                for (let r = 1; r < rows; r++) {
-                    const node = nodes[r * cols + c];
-                    ctx.lineTo(node.x, node.y);
-                }
+                ctx.moveTo(grid[0][c].originX, grid[0][c].originY);
+                ctx.lineTo(grid[rows - 1][c].originX, grid[rows - 1][c].originY);
+            }
+
+            ctx.stroke();
+
+            // 2. Tenké CAD křížky (+) na průsečících
+            ctx.strokeStyle = CROSS_STROKE;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                ctx.moveTo(n.originX - CROSS_ARM, n.originY);
+                ctx.lineTo(n.originX + CROSS_ARM, n.originY);
+                ctx.moveTo(n.originX, n.originY - CROSS_ARM);
+                ctx.lineTo(n.originX, n.originY + CROSS_ARM);
             }
 
             ctx.stroke();
         }
 
-        function updateAndRender() {
-            ctx.clearRect(0, 0, width, height);
+        // Naplánování příštího seismického pulsu (každých cca 6 až 10 sekund)
+        function scheduleNextPulse(delay) {
+            clearTimeout(pulseTimer);
+            if (motionQuery.matches) return;
 
-            let hasMovement = false;
+            const waitTime = typeof delay === 'number' ? delay : (6000 + Math.random() * 4000);
+            pulseTimer = setTimeout(triggerShockwave, waitTime);
+        }
+
+        // Odpálení autonomního seismického pulsu
+        function triggerShockwave() {
+            if (motionQuery.matches || visibleNodes.length === 0) return;
+
+            const isMobile = width < 768;
+            const epicenterNode = visibleNodes[Math.floor(Math.random() * visibleNodes.length)];
+
+            activeWave = {
+                epicenterX: epicenterNode.originX,
+                epicenterY: epicenterNode.originY,
+                radius: 0,
+                maxRadius: isMobile ? 260 : 320, // poloměr dosahu cca 260–340 px
+                speed: isMobile ? 210 : 250,      // rychlost šíření čela v px/s
+                waveWidth: isMobile ? 42 : 54,    // šířka energetického čela
+                energy: 1.0
+            };
+
+            // Počáteční energetický akcent v epicentru
+            epicenterNode.highlight = 1.0;
+
+            if (!rafId) {
+                lastTime = performance.now();
+                rafId = requestAnimationFrame(render);
+            }
+        }
+
+        // Hlavní renderovací a fyzikální smyčka (probouzí se jen při pulsu a usíná v klidu)
+        function render(timestamp) {
+            const now = timestamp || performance.now();
+            const dt = Math.min((now - lastTime) / 1000, 0.04) || 0.016;
+            lastTime = now;
+
+            const isMobile = width < 768;
+
+            // 1. Aktualizace seismické vlny
+            if (activeWave) {
+                activeWave.radius += activeWave.speed * dt;
+                // Exponenciálně tlumený pokles energie od 1 k 0
+                activeWave.energy = Math.pow(Math.max(0, 1 - activeWave.radius / activeWave.maxRadius), 1.25);
+
+                if (activeWave.radius >= activeWave.maxRadius || activeWave.energy <= 0.005) {
+                    activeWave = null;
+                }
+            }
+
+            // 2. Kinetické působení vlny a mechanické tlumení (Spring Physics & Damping)
+            let maxDisp = 0;
+            let maxHl = 0;
 
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
 
-                let targetX = node.originX;
-                let targetY = node.originY;
+                // Působení čela rázové vlny
+                if (activeWave && activeWave.energy > 0.008) {
+                    const dx = node.originX - activeWave.epicenterX;
+                    const dy = node.originY - activeWave.epicenterY;
+                    const dist = Math.hypot(dx, dy);
+                    const diff = dist - activeWave.radius;
 
-                if (isMouseInside) {
-                    const dx = node.originX - mouseX;
-                    const dy = node.originY - mouseY;
-                    const distSq = dx * dx + dy * dy;
+                    if (Math.abs(diff) < activeWave.waveWidth && dist > 2) {
+                        const normDist = diff / activeWave.waveWidth; // -1 až 1
+                        const waveIntensity = Math.cos(normDist * (Math.PI / 2)); // hladký kosinusový profil čela
 
-                    if (distSq < influenceRadiusSq && distSq > 0.01) {
-                        const dist = Math.sqrt(distSq);
-                        // Hladký kosinový útlum: sametový, táhlý přechod s nulovou derivací na okraji
-                        const norm = dist / influenceRadius;
-                        const factor = 0.5 * (1 + Math.cos(Math.PI * norm));
-                        const displacement = factor * maxDisplacement;
-                        targetX += (dx / dist) * displacement;
-                        targetY += (dy / dist) * displacement;
+                        if (waveIntensity > 0) {
+                            // Radiální vytlačení od epicentra
+                            const pushMagnitude = waveIntensity * activeWave.energy * (isMobile ? 2.6 : 3.4);
+                            const nx = dx / dist;
+                            const ny = dy / dist;
+
+                            node.vx += nx * pushMagnitude;
+                            node.vy += ny * pushMagnitude;
+
+                            // Světelný náboj v čele vlny
+                            const lightIntensity = waveIntensity * activeWave.energy;
+                            if (lightIntensity > node.highlight) {
+                                node.highlight = lightIntensity;
+                            }
+                        }
                     }
                 }
 
-                // Spring & damping dynamika
-                const fx = (targetX - node.x) * SPRING_TENSION;
-                const fy = (targetY - node.y) * SPRING_TENSION;
-                node.vx = (node.vx + fx) * DAMPING;
-                node.vy = (node.vy + fy) * DAMPING;
+                // Pružinové tlumení zpět do klidového bodu (Hooke's Spring + Damping)
+                const springForceX = (node.originX - node.x) * 0.12;
+                const springForceY = (node.originY - node.y) * 0.12;
+
+                node.vx = (node.vx + springForceX) * 0.84;
+                node.vy = (node.vy + springForceY) * 0.84;
+
                 node.x += node.vx;
                 node.y += node.vy;
 
-                // Kontrola klidového stavu (thresholding)
-                const diffX = node.x - node.originX;
-                const diffY = node.y - node.originY;
-                if (
-                    Math.abs(node.vx) > 0.01 ||
-                    Math.abs(node.vy) > 0.01 ||
-                    Math.abs(diffX) > 0.05 ||
-                    Math.abs(diffY) > 0.05
-                ) {
-                    hasMovement = true;
-                } else if (!isMouseInside) {
-                    // Dokonalé ustálení do geometrické nuly
-                    node.x = node.originX;
-                    node.y = node.originY;
-                    node.vx = 0;
-                    node.vy = 0;
-                }
+                // Sametové odeznívání světelného akcentu
+                node.highlight *= 0.88;
+                if (node.highlight < 0.003) node.highlight = 0;
+
+                const disp = Math.hypot(node.x - node.originX, node.y - node.originY);
+                if (disp > maxDisp) maxDisp = disp;
+                if (node.highlight > maxHl) maxHl = node.highlight;
             }
 
-            // 1. Základní vykreslení mřížky se zvýšeným kontrastem
-            ctx.strokeStyle = BASE_STROKE;
-            ctx.lineWidth = baseLineWidth;
-            ctx.beginPath();
+            // 3. Vykreslení rámu
+            ctx.clearRect(0, 0, width, height);
 
+            // A) Linky sítě spojené skrze reálné (kineticky deformované) pozice uzlů
+            ctx.strokeStyle = GRID_STROKE;
+            ctx.lineWidth = 1;
+
+            // Horizontální křivky/linky
             for (let r = 0; r < rows; r++) {
-                const rowOffset = r * cols;
-                ctx.moveTo(nodes[rowOffset].x, nodes[rowOffset].y);
+                ctx.beginPath();
+                ctx.moveTo(grid[r][0].x, grid[r][0].y);
                 for (let c = 1; c < cols; c++) {
-                    const node = nodes[rowOffset + c];
-                    ctx.lineTo(node.x, node.y);
+                    ctx.lineTo(grid[r][c].x, grid[r][c].y);
+                }
+                ctx.stroke();
+            }
+
+            // Vertikální křivky/linky
+            for (let c = 0; c < cols; c++) {
+                ctx.beginPath();
+                ctx.moveTo(grid[0][c].x, grid[0][c].y);
+                for (let r = 1; r < rows; r++) {
+                    ctx.lineTo(grid[r][c].x, grid[r][c].y);
+                }
+                ctx.stroke();
+            }
+
+            // B) Světelný akcent na linkách v zóně čela vlny (oranžové prosvitnutí linky)
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols - 1; c++) {
+                    const n1 = grid[r][c];
+                    const n2 = grid[r][c + 1];
+                    const segHl = (n1.highlight + n2.highlight) * 0.5;
+                    if (segHl > 0.04) {
+                        ctx.strokeStyle = `rgba(255, 85, 0, ${(segHl * 0.45).toFixed(3)})`;
+                        ctx.lineWidth = 1.2;
+                        ctx.beginPath();
+                        ctx.moveTo(n1.x, n1.y);
+                        ctx.lineTo(n2.x, n2.y);
+                        ctx.stroke();
+                    }
                 }
             }
 
             for (let c = 0; c < cols; c++) {
-                ctx.moveTo(nodes[c].x, nodes[c].y);
-                for (let r = 1; r < rows; r++) {
-                    const node = nodes[r * cols + c];
-                    ctx.lineTo(node.x, node.y);
+                for (let r = 0; r < rows - 1; r++) {
+                    const n1 = grid[r][c];
+                    const n2 = grid[r + 1][c];
+                    const segHl = (n1.highlight + n2.highlight) * 0.5;
+                    if (segHl > 0.04) {
+                        ctx.strokeStyle = `rgba(255, 85, 0, ${(segHl * 0.45).toFixed(3)})`;
+                        ctx.lineWidth = 1.2;
+                        ctx.beginPath();
+                        ctx.moveTo(n1.x, n1.y);
+                        ctx.lineTo(n2.x, n2.y);
+                        ctx.stroke();
+                    }
                 }
             }
 
+            // C) CAD zaměřovací křížky (+) na uzlech
+            // 1. Běžné křížky s nízkou/nulovou luminiscencí (jedna dávka pro maximální výkon)
+            ctx.strokeStyle = CROSS_STROKE;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                if (n.highlight <= 0.04) {
+                    ctx.moveTo(n.x - CROSS_ARM, n.y);
+                    ctx.lineTo(n.x + CROSS_ARM, n.y);
+                    ctx.moveTo(n.x, n.y - CROSS_ARM);
+                    ctx.lineTo(n.x, n.y + CROSS_ARM);
+                }
+            }
             ctx.stroke();
 
-            // 2. Dynamické prosvětlení linek a uzlů v zóně deformace
-            if (isMouseInside) {
-                const minC = Math.max(0, Math.floor((mouseX - influenceRadius - offsetX) / spacing) - 1);
-                const maxC = Math.min(cols - 1, Math.ceil((mouseX + influenceRadius - offsetX) / spacing) + 1);
-                const minR = Math.max(0, Math.floor((mouseY - influenceRadius - offsetY) / spacing) - 1);
-                const maxR = Math.min(rows - 1, Math.ceil((mouseY + influenceRadius - offsetY) / spacing) + 1);
+            // 2. Zvýrazněné křížky na čele vlny s oranžovým/bílým technickým svitem
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                if (n.highlight > 0.04) {
+                    const arm = CROSS_ARM + n.highlight * 0.8;
+                    const crossAlpha = Math.min(1, 0.2 + n.highlight * 0.8);
+                    ctx.strokeStyle = `rgba(255, 120, 50, ${crossAlpha.toFixed(3)})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(n.x - arm, n.y);
+                    ctx.lineTo(n.x + arm, n.y);
+                    ctx.moveTo(n.x, n.y - arm);
+                    ctx.lineTo(n.x, n.y + arm);
+                    ctx.stroke();
 
-                const glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, influenceRadius);
-                glow.addColorStop(0, 'rgba(255, 255, 255, 0.30)');
-                glow.addColorStop(0.5, 'rgba(255, 255, 255, 0.12)');
-                glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
-
-                ctx.strokeStyle = glow;
-                ctx.lineWidth = baseLineWidth + 0.3;
-                ctx.beginPath();
-
-                for (let r = minR; r <= maxR; r++) {
-                    const rowOffset = r * cols;
-                    ctx.moveTo(nodes[rowOffset + minC].x, nodes[rowOffset + minC].y);
-                    for (let c = minC + 1; c <= maxC; c++) {
-                        const node = nodes[rowOffset + c];
-                        ctx.lineTo(node.x, node.y);
-                    }
-                }
-
-                for (let c = minC; c <= maxC; c++) {
-                    ctx.moveTo(nodes[minR * cols + c].x, nodes[minR * cols + c].y);
-                    for (let r = minR + 1; r <= maxR; r++) {
-                        const node = nodes[r * cols + c];
-                        ctx.lineTo(node.x, node.y);
-                    }
-                }
-
-                ctx.stroke();
-
-                // Prosvětlené uzlové body v zóně dotyku (CAD junction points s plynulým útlumem)
-                for (let r = minR; r <= maxR; r++) {
-                    const rowOffset = r * cols;
-                    for (let c = minC; c <= maxC; c++) {
-                        const node = nodes[rowOffset + c];
-                        const dx = node.x - mouseX;
-                        const dy = node.y - mouseY;
-                        const distSq = dx * dx + dy * dy;
-                        if (distSq < influenceRadiusSq) {
-                            const dist = Math.sqrt(distSq);
-                            const norm = dist / influenceRadius;
-                            const pointFactor = 0.5 * (1 + Math.cos(Math.PI * norm));
-                            const pointAlpha = pointFactor * 0.38;
-                            ctx.fillStyle = `rgba(255, 255, 255, ${pointAlpha.toFixed(3)})`;
-                            ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
-                        }
-                    }
+                    // Miniaturní zářivý středový bod v uzlu
+                    ctx.fillStyle = `rgba(255, 255, 255, ${(n.highlight * 0.85).toFixed(3)})`;
+                    ctx.fillRect(n.x - 0.75, n.y - 0.75, 1.5, 1.5);
                 }
             }
 
-            // Automatické uspání smyčky, pokud myš opustila Hero a mřížka se ustálila
-            if (isMouseInside || hasMovement) {
-                rafId = requestAnimationFrame(updateAndRender);
-            } else {
-                isLoopRunning = false;
+            // D) Světelné efekty čela vlny: Počáteční výboj v epicentru a postupující prstenec
+            if (activeWave) {
+                // Energetický záblesk v epicentru (plynule dohasíná při expanzi do 75 px)
+                if (activeWave.radius < 75) {
+                    const burstRatio = activeWave.radius / 75;
+                    const burstAlpha = (1 - burstRatio) * 0.55;
+                    const burstGrad = ctx.createRadialGradient(
+                        activeWave.epicenterX, activeWave.epicenterY, 0,
+                        activeWave.epicenterX, activeWave.epicenterY, 26
+                    );
+                    burstGrad.addColorStop(0, `rgba(255, 85, 0, ${burstAlpha.toFixed(3)})`);
+                    burstGrad.addColorStop(0.35, `rgba(255, 85, 0, ${(burstAlpha * 0.4).toFixed(3)})`);
+                    burstGrad.addColorStop(1, 'rgba(255, 85, 0, 0)');
+
+                    ctx.fillStyle = burstGrad;
+                    ctx.beginPath();
+                    ctx.arc(activeWave.epicenterX, activeWave.epicenterY, 26, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Jemný světelný prstenec na čele seismické rázové vlny
+                if (activeWave.radius > 6 && activeWave.energy > 0.01) {
+                    ctx.beginPath();
+                    ctx.arc(activeWave.epicenterX, activeWave.epicenterY, activeWave.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(255, 85, 0, ${(activeWave.energy * 0.22).toFixed(3)})`;
+                    ctx.lineWidth = Math.max(1, activeWave.waveWidth * 0.22 * activeWave.energy);
+                    ctx.stroke();
+                }
+            }
+
+            // 4. Detekce návratu do absolutního geometrického klidu a uspání smyčky
+            if (!activeWave && maxDisp < 0.05 && maxHl < 0.005) {
+                // Přesné ukotvení na původní souřadnice
+                for (let i = 0; i < nodes.length; i++) {
+                    const n = nodes[i];
+                    n.x = n.originX;
+                    n.y = n.originY;
+                    n.vx = 0;
+                    n.vy = 0;
+                    n.highlight = 0;
+                }
+
+                // Finální precizní vykreslení statické mřížky a uspání smyčky
+                drawStaticCadGrid();
+                cancelAnimationFrame(rafId);
                 rafId = null;
+
+                // Naplánování příštího seismického pulsu (šetří CPU i GPU)
+                scheduleNextPulse();
+                return;
             }
+
+            // Pokračování ve vykreslování aktivního pulsu / dojezdu pružin
+            rafId = requestAnimationFrame(render);
         }
 
-        function startLoop() {
-            if (!isLoopRunning) {
-                isLoopRunning = true;
-                rafId = requestAnimationFrame(updateAndRender);
-            }
+        // Listener pro prefers-reduced-motion
+        if (motionQuery.addEventListener) {
+            motionQuery.addEventListener('change', (e) => {
+                if (e.matches) {
+                    clearTimeout(pulseTimer);
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                    activeWave = null;
+                    drawStaticCadGrid();
+                } else {
+                    scheduleNextPulse(2000);
+                }
+            });
         }
 
-        // Posluchače událostí výhradně pro jemný desktopový ukazatel
-        if (isFinePointer) {
-            heroSection.addEventListener('mousemove', (e) => {
-                const rect = heroSection.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
-                isMouseInside = true;
-                startLoop();
-            }, { passive: true });
-
-            heroSection.addEventListener('mouseenter', (e) => {
-                const rect = heroSection.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
-                isMouseInside = true;
-                startLoop();
-            }, { passive: true });
-
-            heroSection.addEventListener('mouseleave', () => {
-                isMouseInside = false;
-                mouseX = -9999;
-                mouseY = -9999;
-                startLoop(); // pokračuje do plného ustálení pružin
-            }, { passive: true });
-        }
-
-        // Responzivní přizpůsobení geometrie
+        // Responzivní přizpůsobení při změně velikosti okna
         if (typeof ResizeObserver !== 'undefined') {
             const resizeObserver = new ResizeObserver(() => {
                 resizeGrid();
@@ -396,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resizeGrid();
     }
 
-    initHeroWarpGrid();
+    initCadSeismicPulseGrid();
 
     // ----------------------------------------------------------------------
     // 4. Interaktivní kopírování e-mailové adresy do schránky

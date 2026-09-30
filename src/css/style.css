@@ -132,7 +132,7 @@ body {
    Precision Craft Pass: Rastr, Interaktivní reflektor a Analogový šum
    ========================================================================== */
 
-/* Interaktivní topologická mřížka s fyzikální deformací (Canvas Warp Mesh) */
+/* Autonomní hybridní seismický puls v CAD síti (Kinetics & Luminescence Shockwave) */
 #hero-warp-canvas {
     position: absolute;
     inset: 0;
@@ -179,17 +179,6 @@ body {
         rgba(0, 0, 0, 0.5) 45%,
         rgba(0, 0, 0, 0) 80%
     );
-}
-
-/* Interaktivní reflektor na kurzor (Cursor Ambient Spotlight) */
-.cursor-spotlight {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2;
-    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 40%), rgba(255, 255, 255, 0.045), transparent 60%);
-    will-change: background;
 }
 
 /* Fyzikální textura materiálu (Matný kov / Micro-grain) */
