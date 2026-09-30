@@ -281,13 +281,13 @@
             <div class="max-w-4xl mx-auto px-4 sm:px-8">
                 <!-- Nadpis sekce v monospace -->
                 <div class="text-xs font-mono text-[#FF5500] tracking-wider uppercase mb-3 sm:mb-4 reveal-spatial">
-                    // SYSTÉMY &amp; PIPELINES
+                    // AUTOMATIZACE &amp; DATOVÉ PIPELINE
                 </div>
 
                 <!-- Název projektu & Stack štítky -->
                 <div class="reveal-spatial reveal-delay-1">
                     <h2 class="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
-                        Autonomous M&amp;A Lead Intelligence &amp; Data Pipeline
+                        ARES Data Pipeline
                     </h2>
 
                     <!-- Tech stack badges (velmi decentní) -->
@@ -295,28 +295,16 @@
                         <span
                             class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Python</span>
                         <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">ARES
-                            v3 REST</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">ISIR</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Gemini
-                            2.5 Flash Lite</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Justice.cz
-                            Scraper</span>
+                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Gemini AI</span>
                         <span
                             class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">SQLite</span>
                         <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">openpyxl</span>
+                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">ARES API</span>
                     </div>
 
                     <!-- Popis projektu -->
                     <p class="text-zinc-400 text-sm sm:text-base leading-relaxed font-normal max-w-2xl mt-6">
-                        Distribuovaný pipeline pro automatizovanou akvizici a finanční kvalifikaci českých B2B firem.
-                        Systém dávkově vytěžuje veřejné rejstříky, v reálném čase prověřuje bezúhonnost v insolvenčním
-                        rejstříku, pomocí multimodálního modelu Gemini extrahuje finanční výkazy ze Sbírky listin a
-                        páruje statutární orgány na reálně ověřené kontakty.
+                        Automatizovaný systém pro vytěžování českých rejstříků (ARES, Justice.cz). Pomocí Gemini AI analyzuje účetní závěrky, dohledává ověřené kontakty na vedení firem a exportuje čistá strukturovaná data pro obchod.
                     </p>
                 </div>
 
@@ -325,35 +313,30 @@
                     class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 mt-10 pt-8 border-t border-white/10 reveal-spatial reveal-delay-2">
                     <!-- Stage 1 -->
                     <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">01 /
-                            Discovery</h3>
+                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">01 / Sběr z rejstříků</h3>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            ARES v3 + ISIR · Filtrace dle CZ-NACE, okamžitá eliminace insolvencí, deduplikace v SQLite.
+                            Filtrování firem z ARES dle oboru a okamžitá kontrola insolvencí (ISIR).
                         </p>
                     </div>
                     <!-- Stage 2 -->
                     <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">02 /
-                            Financials</h3>
+                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">02 / AI extrakce financí</h3>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Justice.cz + Gemini · Stahování PDF závěrek (≥2023), AI extrakce tržeb, kapitálu a zisku.
+                            Stahování účetních závěrek ze Sbírky listin a strojové čtení tržeb a zisku.
                         </p>
                     </div>
                     <!-- Stage 3 -->
                     <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">03 /
-                            Enrichment</h3>
+                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">03 / Ověření kontaktů</h3>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Web Scraping + VR · Ověření domény shodou IČO, párování jednatelů na ověřené telefony a
-                            emaily.
+                            Dohledání webů a párování jednatelů na ověřené e-maily a telefony.
                         </p>
                     </div>
                     <!-- Stage 4 -->
                     <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">04 /
-                            M&amp;A Export</h3>
+                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">04 / Export dat</h3>
                         <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            openpyxl Engine · Generování manažerského Excelu s 11 sloupci, řazeno dle tržeb.
+                            Generování přehledného manažerského Excelu seřazeného podle obratu.
                         </p>
                     </div>
                 </div>
