@@ -93,26 +93,18 @@
                 </span>
             </a>
 
-            <!-- Pravá strana: Živý hardware status a akce -->
-            <div class="flex items-center gap-2 sm:gap-6">
-                <!-- Živý hardware status -->
-                <div class="flex items-center gap-1.5 text-[10px] xs:text-[11px] text-zinc-400 font-normal">
-                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>
-                    <span id="live-time">--:--</span>
-                </div>
+            <!-- Pravá strana: Odkaz a akce -->
+            <div class="flex items-center gap-5 sm:gap-6">
+                <!-- Textový odkaz na sekci (na mobilu skrytý) -->
+                <a href="#about" class="hidden sm:block text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors">Architektura</a>
 
-                <!-- Mobilní kompaktní tlačítko pro kontakt (přímé, bez hamburger menu) -->
+                <!-- Mobilní kompaktní tlačítko pro kontakt -->
                 <a href="#contact" class="inline-flex sm:hidden items-center justify-center text-[12px] font-medium tracking-wide text-zinc-300 bg-white/[0.04] border border-white/[0.1] rounded-[3px] px-2.5 py-1 hover:border-white/20 hover:text-white active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 select-none">Kontakt</a>
 
-                <!-- Odkazy a tlačítko na desktopu -->
-                <div class="hidden sm:flex items-center gap-6">
-                    <a href="#about"
-                        class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Architektura</a>
-                    <a href="#contact"
-                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-zinc-200 bg-zinc-900 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-colors active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 select-none min-h-[36px]">
-                        Kontakt
-                    </a>
-                </div>
+                <!-- Tlačítko na desktopu -->
+                <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-zinc-200 bg-zinc-900 border border-white/10 hover:border-white/20 hover:text-white rounded-lg transition-colors active:scale-[0.97] active:bg-zinc-800/80 transition-all duration-75 select-none min-h-[36px]">
+                    Kontakt
+                </a>
             </div>
         </nav>
     </header>
@@ -120,8 +112,8 @@
     <main class="w-full relative z-10">
         <!-- SECTION: HERO (100dvh) -->
         <section id="hero" class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center px-4 sm:px-6 overflow-hidden">
-            <!-- Architektonický rastr se sametovým rozplynutím a interaktivní reflektor na kurzor -->
-            <div class="precision-grid hero-grid-fade anim-cinematic-bg absolute inset-0 w-full h-full pointer-events-none overflow-hidden" aria-hidden="true"></div>
+            <!-- Topologická mřížka s fyzikální deformací na plátně (Canvas Warp Mesh) -->
+            <canvas id="hero-warp-canvas" class="hero-grid-fade anim-cinematic-bg absolute inset-0 w-full h-full pointer-events-none overflow-hidden z-[1]" aria-hidden="true"></canvas>
             <div class="cursor-spotlight anim-cinematic-bg" aria-hidden="true"></div>
 
             <div class="relative z-10 w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center">
@@ -166,14 +158,14 @@
                 <!-- Redakční dvousloupcový blok -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
                     <!-- Vlevo: Lidský a věcný text -->
-                    <div class="md:col-span-6">
+                    <div class="md:col-span-6 reveal-spatial">
                         <p class="text-zinc-200 text-lg sm:text-xl leading-relaxed font-normal">
                             Navrhuji a vyvíjím backendové systémy, moderní webové aplikace a datové integrace. Soustředím se na přehledný kód, rychlá rozhraní a spolehlivou architekturu bez nutnosti neustálého dohledu.
                         </p>
                     </div>
 
                     <!-- Vpravo: Čisté řádky se zaměřením -->
-                    <div class="md:col-span-6 pt-2 md:pt-0">
+                    <div class="md:col-span-6 pt-2 md:pt-0 reveal-spatial reveal-delay-1">
                         <div class="border-b border-white/[0.05] pb-4 mb-4">
                             <div class="text-sm font-medium text-zinc-100">Backend &amp; Databáze</div>
                             <div class="text-sm text-zinc-400 font-normal mt-0.5">Python, FastAPI, PostgreSQL, Redis, asynchronní architektura</div>
@@ -192,7 +184,7 @@
                 <!-- Osobní inženýrský profil & Vzdělání a praxe -->
                 <div class="mt-20 pt-16 border-t border-white/[0.06]">
                     <!-- Úvodní bio (Inženýrský profil) -->
-                    <div class="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal space-y-4">
+                    <div class="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal space-y-4 reveal-spatial">
                         <p>
                             Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy zajímalo, jak věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem slaboproudou elektrotechniku v Děčíně, kde jsem pracoval s obvody, signály a hardwarem.
                         </p>
@@ -205,7 +197,7 @@
                     </div>
 
                     <!-- Strukturované milníky (Kompaktní přehled) -->
-                    <div class="mt-12 space-y-4 max-w-3xl">
+                    <div class="mt-12 space-y-4 max-w-3xl reveal-spatial reveal-delay-1">
                         <!-- Položka 1: ČVUT FJFI -->
                         <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
                             <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
@@ -248,7 +240,7 @@
                 <div class="divider-fade mt-20 sm:mt-24 mb-12" aria-hidden="true"></div>
 
                 <!-- Autentický přímý kontakt -->
-                <div id="contact">
+                <div id="contact" class="reveal-spatial">
                     <div class="text-zinc-400 text-sm mb-3 font-normal">
                         Máte projekt nebo dotaz?
                     </div>
@@ -301,7 +293,7 @@
 
     <!-- SECTION: FOOTER -->
     <footer class="w-full border-t border-white/[0.06] bg-[#050507]">
-        <div class="max-w-4xl mx-auto py-12 px-4 sm:px-8">
+        <div class="max-w-4xl mx-auto py-12 px-4 sm:px-8 reveal-spatial">
             <!-- Horní řádek patičky -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="text-xs text-zinc-500">

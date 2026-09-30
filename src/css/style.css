@@ -132,6 +132,17 @@ body {
    Precision Craft Pass: Rastr, Interaktivní reflektor a Analogový šum
    ========================================================================== */
 
+/* Interaktivní topologická mřížka s fyzikální deformací (Canvas Warp Mesh) */
+#hero-warp-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
 /* Architektonický rastr do ztracena (Background Precision Grid) */
 .precision-grid {
     position: absolute;
@@ -143,13 +154,14 @@ body {
     z-index: 1;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-    background-size: 48px 48px;
+    background-size: 26px 26px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .precision-grid {
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 48px 48px;
     }
 }
 
@@ -317,4 +329,47 @@ html.lenis body {
 
 .lenis.lenis-stopped {
     overflow: hidden;
+}
+
+/* ==========================================================================
+   Spatial Depth & Optics Reveal (Spatial Scroll Transition)
+   ========================================================================== */
+
+.reveal-spatial {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+    filter: blur(6px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+}
+
+.reveal-spatial.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+}
+
+/* Kaskádové zpoždění (staggering) */
+.reveal-delay-1 {
+    transition-delay: 80ms;
+}
+
+.reveal-delay-2 {
+    transition-delay: 160ms;
+}
+
+.reveal-delay-3 {
+    transition-delay: 240ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-spatial {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        will-change: auto !important;
+    }
 }
