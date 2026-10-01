@@ -625,11 +625,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     function initTerminalSimulation() {
-        const simBtn = document.getElementById('run-terminal-sim');
+        const simBtn = document.getElementById('run-sim-btn') || document.getElementById('run-terminal-sim');
         const terminalScreen = document.getElementById('terminal-screen');
+        const pipelineBus = document.querySelector('.pipeline-bus');
         if (!simBtn || !terminalScreen) return;
 
-        const DESKTOP_LOG_ROWS = [
+        // U výchozího stavu přidej kontejneru sběrnice třídu is-idle
+        if (pipelineBus) {
+            pipelineBus.classList.add('is-idle');
+        }
+
+        let idleResetTimer = null;
+
+        const LOG_ROWS = [
             '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Discovery:</span> ARES Search NACE 25110 | Nalezen: <span class="text-[#d4d4d8]">GELSO, s.r.o.</span> (IČO: 25321480)',
             '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Financials:</span> Justice.cz staženo PDF -&gt; Gemini 2.5 Flash Lite extrahuje výkazy...',
             '<span class="text-[#ffffff] font-semibold">[OK]  </span> <span class="text-[#52525b]">Financials:</span> <span class="text-[#ffffff] font-semibold">QUALIFIED ✓</span> | Rev=<span class="text-[#ffffff]">31.6M</span> | Equity=<span class="text-[#ffffff]">39.2M</span> | VH=<span class="text-[#ffffff]">0.0M</span> (2024)',
@@ -638,31 +646,29 @@ document.addEventListener('DOMContentLoaded', () => {
             '<span class="text-[#ffffff] font-semibold">[DONE]</span> <span class="text-[#52525b]">Export:</span> M&amp;A Excel vygenerován: <span class="text-[#d4d4d8]">output/Export_MA_2026.xlsx</span> (4 leady)'
         ];
 
-        const MOBILE_LOG_ROWS = [
-            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Discovery:</span> ARES NACE 25110 -&gt; <span class="text-[#d4d4d8]">GELSO s.r.o.</span> (IČO 25321480)',
-            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Justice.cz:</span> Staženo PDF -&gt; Gemini 2.5 extrakce',
-            '<span class="text-[#ffffff] font-semibold">[OK]  </span> <span class="text-[#52525b]">Financials:</span> <span class="text-[#ffffff] font-semibold">QUALIFIED ✓</span> | Tržby <span class="text-[#ffffff]">31.6M</span> (2024)',
-            '<span class="text-[#fbbf24] font-semibold">[WARN]</span> TENTE s.r.o. -&gt; <span class="text-[#fbbf24] font-semibold">DISQUALIFIED</span> (tržby &lt; 18M)',
-            '<span class="text-[#d4d4d8] font-semibold">[INFO]</span> <span class="text-[#52525b]">Enrichment:</span> gelso.cz ověřeno -&gt; 1 jednatel, kontakt OK',
-            '<span class="text-[#ffffff] font-semibold">[DONE]</span> <span class="text-[#52525b]">Export:</span> M&amp;A Excel vygenerován (4 leady)'
-        ];
-
         let isRunning = false;
 
         simBtn.addEventListener('click', () => {
             if (isRunning) return;
             isRunning = true;
 
-            const isMobile = window.innerWidth < 640;
-            const logRows = isMobile ? MOBILE_LOG_ROWS : DESKTOP_LOG_ROWS;
+            // Zrušit čekající časovač návratu do klidového stavu
+            if (idleResetTimer) {
+                clearTimeout(idleResetTimer);
+                idleResetTimer = null;
+            }
+
+            // Ihned na začátku běhu odstraň třídu is-idle (klidový sweep se okamžitě vypne)
+            if (pipelineBus) {
+                pipelineBus.classList.remove('is-idle');
+            }
 
             const labelEl = simBtn.querySelector('.sim-btn-label') || simBtn;
-            labelEl.innerHTML = '<span class="sm:hidden">...</span><span class="hidden sm:inline">Zpracovávám...</span>';
+            labelEl.innerHTML = 'Zpracovávám...';
             simBtn.disabled = true;
 
             // Ponechat inženýrský příkazový prompt
-            const promptCmd = isMobile ? 'python main.py' : 'python main.py --config=mna_search.json';
-            terminalScreen.innerHTML = `<div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span class="text-[#FF5500] font-semibold">$</span></span> <span class="text-[#d4d4d8]">${promptCmd}</span></div>`;
+            terminalScreen.innerHTML = `<div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span class="text-[#FF5500] font-semibold">$</span></span> <span class="text-[#d4d4d8]">python main.py</span></div>`;
 
             // Reset a inicializace sběrnice na 1. krok
             setPipelineStep(0);
@@ -671,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let currentStep = 0;
 
             function outputNextLine() {
-                if (currentStep < logRows.length) {
+                if (currentStep < LOG_ROWS.length) {
                     // Propojení s hardwarovou sběrnicí
                     if (currentStep === 0) {
                         setPipelineStep(1); // Sběr z rejstříků (ARES & ISIR)
@@ -685,36 +691,114 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const row = document.createElement('div');
                     row.className = 'terminal-row';
-                    row.innerHTML = logRows[currentStep];
+                    row.innerHTML = LOG_ROWS[currentStep];
                     terminalScreen.appendChild(row);
                     terminalScreen.scrollTop = terminalScreen.scrollHeight;
 
                     currentStep++;
-                    setTimeout(outputNextLine, 300);
+                    setTimeout(outputNextLine, 350);
                 } else {
-                    // Dokončení pipeline - signální oranžový stav
+                    // Dokončení pipeline: Finished: Cílový počet leadů splněn.
                     const finishRow = document.createElement('div');
-                    finishRow.className = 'terminal-row pt-2 text-[#FF5500] font-semibold flex items-center gap-2 border-t border-white/[0.06]';
-                    const finishText = isMobile ? '● Target reached (hotovo)' : '● Pipeline finished: Cílový počet leadů splněn.';
-                    finishRow.innerHTML = `<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>${finishText}`;
+                    finishRow.className = 'terminal-row pt-1 text-[#d4d4d8]';
+                    finishRow.innerHTML = '<span class="text-[#FF5500] font-semibold">Finished:</span> Cílový počet leadů splněn.';
                     terminalScreen.appendChild(finishRow);
                     terminalScreen.scrollTop = terminalScreen.scrollHeight;
 
                     // Všechny uzly sběrnice do dokončeného stavu
                     setPipelineStep('done');
 
-                    // Odblokovat tlačítko a nabídnout možnost znovu spustit
-                    simBtn.disabled = false;
-                    labelEl.innerHTML = '<span class="sm:hidden">↺ Znovu</span><span class="hidden sm:inline">Spustit znovu ↺</span>';
-                    isRunning = false;
+                    // Vypsání finálního řádku [READY] Stiskněte [SPUSTIT_SIMULACI ▶]
+                    idleResetTimer = setTimeout(() => {
+                        const readyRow = document.createElement('div');
+                        readyRow.className = 'terminal-row text-[#71717a]';
+                        readyRow.innerHTML = '<span class="text-[#FF5500] font-semibold">[READY]</span> Stiskněte [SPUSTIT_SIMULACI ▶]';
+                        terminalScreen.appendChild(readyRow);
+                        terminalScreen.scrollTop = terminalScreen.scrollHeight;
+
+                        // Obnovit sběrnici zpět do klidového režimu a spustit idle telemetry sweep
+                        setPipelineStep(0);
+                        if (pipelineBus) {
+                            pipelineBus.classList.add('is-idle');
+                        }
+
+                        // Odblokovat tlačítko pro další spuštění
+                        simBtn.disabled = false;
+                        labelEl.innerHTML = 'SPUSTIT SIMULACI ▶';
+                        isRunning = false;
+                    }, 400);
                 }
             }
 
-            setTimeout(outputNextLine, 300);
+            setTimeout(outputNextLine, 350);
         });
     }
 
     initTerminalSimulation();
+
+    // ----------------------------------------------------------------------
+    // 7. Plovoucí CAD tlačítko Zpět nahoru (#back-to-top)
+    // ----------------------------------------------------------------------
+    function initBackToTop() {
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (!backToTopBtn) return;
+
+        const updateVisibility = () => {
+            const contactSection = document.getElementById('contact');
+            const footerEl = document.querySelector('footer');
+
+            let shouldShow = false;
+
+            if (contactSection) {
+                const rect = contactSection.getBoundingClientRect();
+                // Zobrazit, jakmile se sekce kontakt přiblíží do spodní části obrazovky
+                if (rect.top <= window.innerHeight * 0.85) {
+                    shouldShow = true;
+                }
+            } else if (footerEl) {
+                const rect = footerEl.getBoundingClientRect();
+                if (rect.top <= window.innerHeight) {
+                    shouldShow = true;
+                }
+            } else {
+                // Fallback na základě celkového scrollování (> 60 % výšky dokumentu)
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (docHeight > 0 && window.scrollY / docHeight > 0.6) {
+                    shouldShow = true;
+                }
+            }
+
+            if (shouldShow) {
+                backToTopBtn.classList.add('is-visible');
+            } else {
+                backToTopBtn.classList.remove('is-visible');
+            }
+        };
+
+        window.addEventListener('scroll', updateVisibility, { passive: true });
+        if (window.lenis) {
+            window.lenis.on('scroll', updateVisibility);
+        }
+        updateVisibility();
+
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.lenis) {
+                window.lenis.scrollTo(0, {
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+            } else {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+
+    initBackToTop();
 });
+
 
 

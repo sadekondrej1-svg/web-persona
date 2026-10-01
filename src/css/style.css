@@ -20,6 +20,37 @@ body {
     text-rendering: optimizeLegibility;
 }
 
+/* ==========================================================================
+   Globální eliminace zaoblení pro CAD/hardware estetiku (90° hrany)
+   ========================================================================== */
+button,
+.btn,
+a.btn,
+.btn-titanium,
+.btn-nav,
+.btn-dark-glass,
+.btn-solid-tech,
+.btn-secondary,
+.terminal-run-btn,
+.sim-run-btn,
+input,
+textarea,
+select,
+.card,
+.box,
+.tag,
+.badge,
+.tech-tag,
+.pill,
+nav a.button,
+nav .btn {
+    border-radius: 0px !important;
+}
+
+/* Výjimka – zachování specifického spodního oblouku u portrétu */
+.profile-portrait-frame {
+    border-radius: 0 0 50% 50% / 0 0 35% 35% !important;
+}
 
 /* ==========================================================================
    Matte Precision UI: Clean Minimalist Buttons (Hero CTA & Navigation)
@@ -37,7 +68,7 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    border-radius: 0px !important;
     padding: 9px 22px;
     color: #ffffff !important;
     font-size: 14px;
@@ -114,7 +145,7 @@ body {
     color: rgba(255, 255, 255, 0.7);
     font-size: 13px;
     font-weight: 500;
-    border-radius: 8px;
+    border-radius: 0px !important;
     padding: 6px 14px;
     text-decoration: none;
     will-change: transform;
@@ -144,7 +175,7 @@ body {
     justify-content: center;
     background: #141416;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
+    border-radius: 0px !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     color: #f4f4f5;
     transition: background-color 150ms ease,
@@ -816,30 +847,35 @@ html.lenis body {
     align-items: center;
     justify-content: center;
     padding: 6px 14px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.75rem;
-    /* text-xs */
-    line-height: 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
     white-space: nowrap;
-    color: #FF5500;
-    background: rgba(255, 85, 0, 0.08);
-    border: 1px solid rgba(255, 85, 0, 0.3);
-    border-radius: 4px;
+    color: #ff5500;
+    background: transparent;
+    border: 1px solid #ff5500;
+    border-radius: 0px !important;
     cursor: pointer;
     user-select: none;
-    transition: background 150ms ease, border-color 150ms ease, color 150ms ease, opacity 150ms ease;
+    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 
 .terminal-run-btn:hover:not(:disabled) {
-    background: rgba(255, 85, 0, 0.18);
-    border-color: #FF5500;
-    color: #FF5500;
+    background: #ff5500;
+    color: #000000;
+}
+
+.terminal-run-btn:active:not(:disabled) {
+    background: #cc4400;
+    color: #000000;
 }
 
 .terminal-run-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    pointer-events: none;
+    background: transparent;
+    color: #ff5500;
 }
 
 #terminal-screen {
@@ -861,7 +897,7 @@ html.lenis body {
 
 #terminal-screen::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 3px;
+    border-radius: 0px !important;
 }
 
 .terminal-row {

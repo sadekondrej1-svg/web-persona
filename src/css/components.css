@@ -1,4 +1,36 @@
 /* ==========================================================================
+   Globální eliminace zaoblení pro CAD/hardware estetiku (90° hrany)
+   ========================================================================== */
+button,
+.btn,
+a.btn,
+.btn-titanium,
+.btn-nav,
+.btn-dark-glass,
+.btn-solid-tech,
+.btn-secondary,
+.terminal-run-btn,
+.sim-run-btn,
+input,
+textarea,
+select,
+.card,
+.box,
+.tag,
+.badge,
+.tech-tag,
+.pill,
+nav a.button,
+nav .btn {
+    border-radius: 0px !important;
+}
+
+/* Výjimka – zachování spodního oblouku u portrétu */
+.profile-portrait-frame {
+    border-radius: 0 0 50% 50% / 0 0 35% 35% !important;
+}
+
+/* ==========================================================================
    CAD Portrait Component with Corner Reticles (#about)
    ========================================================================== */
 
@@ -82,3 +114,313 @@
         max-width: 280px;
     }
 }
+
+/* ==========================================================================
+   Biography Typography (#about)
+   ========================================================================== */
+
+.about-bio-text p {
+    color: #a1a1aa; /* decentní tlumená šedá */
+    font-size: 15px;
+    line-height: 1.7;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.about-bio-text p:last-child {
+    margin-bottom: 0;
+}
+
+.bio-hl {
+    color: #f4f4f5; /* čistá jasná bílá */
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   CAD Tech Tags in Systems Section (#systems)
+   ========================================================================== */
+
+.tech-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 20px 0;
+}
+
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: #d4d4d8;
+    background: #0c0c0e;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 2px solid #ff5500; /* CAD akcent */
+    padding: 4px 10px;
+    border-radius: 0px !important;
+    user-select: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.tech-tag:hover {
+    border-color: rgba(255, 85, 0, 0.4);
+    border-left-color: #ff5500;
+    background: rgba(255, 85, 0, 0.06);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   CAD Terminal & Simulation Component (#projects)
+   ========================================================================== */
+
+/* Kontejner terminálu (karta) */
+.terminal-card,
+.terminal-container {
+    border-radius: 0px !important;
+    background: #09090b !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    overflow: hidden;
+}
+
+/* Horní stavová lišta terminálu (Header) */
+.terminal-header {
+    border-radius: 0px !important;
+    background: #0e0e11 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 8px 16px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Spouštěcí tlačítko (Run Button) */
+button#run-terminal-sim,
+button#run-sim-btn,
+.sim-run-btn,
+.terminal-run-btn {
+    border-radius: 0px !important;
+    background: transparent;
+    border: 1px solid #ff5500;
+    color: #ff5500;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+button#run-terminal-sim:hover:not(:disabled),
+button#run-sim-btn:hover:not(:disabled),
+.sim-run-btn:hover:not(:disabled),
+.terminal-run-btn:hover:not(:disabled) {
+    background: #ff5500;
+    color: #000000;
+}
+
+button#run-terminal-sim:active:not(:disabled),
+button#run-sim-btn:active:not(:disabled),
+.sim-run-btn:active:not(:disabled),
+.terminal-run-btn:active:not(:disabled) {
+    background: #cc4400;
+    color: #000000;
+}
+
+button#run-terminal-sim:disabled,
+button#run-sim-btn:disabled,
+.sim-run-btn:disabled,
+.terminal-run-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: transparent;
+    color: #ff5500;
+}
+
+/* Vnitřní konzole (Tělo terminálu) */
+#terminal-screen {
+    border-radius: 0px !important;
+    padding: 16px 20px !important;
+}
+
+#terminal-screen::-webkit-scrollbar-thumb {
+    border-radius: 0px !important;
+}
+
+@media (max-width: 640px) {
+    .terminal-header {
+        padding: 6px 10px !important;
+    }
+
+    button#run-terminal-sim,
+    button#run-sim-btn,
+    .sim-run-btn,
+    .terminal-run-btn {
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+
+    #terminal-screen {
+        padding: 10px 12px !important;
+    }
+}
+
+/* ==========================================================================
+   CAD Pipeline Bus - Idle Telemetry Sweep Animation (#systems / #projects)
+   ========================================================================== */
+
+@keyframes busIdlePing {
+    0%, 100% {
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #71717a;
+        box-shadow: none;
+    }
+    10%, 22% {
+        border-color: #ff5500;
+        color: #ff5500;
+        box-shadow: 0 0 10px rgba(255, 85, 0, 0.45);
+    }
+    32% {
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #71717a;
+        box-shadow: none;
+    }
+}
+
+@keyframes busLabelPing {
+    0%, 100% {
+        color: #71717a;
+    }
+    10%, 22% {
+        color: #ffffff;
+    }
+    32% {
+        color: #71717a;
+    }
+}
+
+/* Celková klidová perioda 8.0s rozdělená striktně sekvenčně (0.0s -> 2.0s -> 4.0s -> 6.0s) */
+
+/* Uzel 01 - Sběr z rejstříků (0.0s) */
+.pipeline-bus.is-idle .bus-node[data-step="1"] .diamond,
+.pipeline-bus.is-idle .bus-node[data-step="1"] .node-id {
+    animation: busIdlePing 8s infinite ease-in-out 0s;
+}
+.pipeline-bus.is-idle .bus-node[data-step="1"] .node-title,
+.pipeline-bus.is-idle .bus-node[data-step="1"] .stage-label {
+    animation: busLabelPing 8s infinite ease-in-out 0s;
+}
+
+/* Uzel 02 - AI extrakce (2.0s) */
+.pipeline-bus.is-idle .bus-node[data-step="2"] .diamond,
+.pipeline-bus.is-idle .bus-node[data-step="2"] .node-id {
+    animation: busIdlePing 8s infinite ease-in-out 2s;
+}
+.pipeline-bus.is-idle .bus-node[data-step="2"] .node-title,
+.pipeline-bus.is-idle .bus-node[data-step="2"] .stage-label {
+    animation: busLabelPing 8s infinite ease-in-out 2s;
+}
+
+/* Uzel 03 - Validace (4.0s) */
+.pipeline-bus.is-idle .bus-node[data-step="3"] .diamond,
+.pipeline-bus.is-idle .bus-node[data-step="3"] .node-id {
+    animation: busIdlePing 8s infinite ease-in-out 4s;
+}
+.pipeline-bus.is-idle .bus-node[data-step="3"] .node-title,
+.pipeline-bus.is-idle .bus-node[data-step="3"] .stage-label {
+    animation: busLabelPing 8s infinite ease-in-out 4s;
+}
+
+/* Uzel 04 - Export (6.0s) */
+.pipeline-bus.is-idle .bus-node[data-step="4"] .diamond,
+.pipeline-bus.is-idle .bus-node[data-step="4"] .node-id {
+    animation: busIdlePing 8s infinite ease-in-out 6s;
+}
+.pipeline-bus.is-idle .bus-node[data-step="4"] .node-title,
+.pipeline-bus.is-idle .bus-node[data-step="4"] .stage-label {
+    animation: busLabelPing 8s infinite ease-in-out 6s;
+}
+
+/* ==========================================================================
+   Plovoucí CAD tlačítko Zpět nahoru (#back-to-top)
+   ========================================================================== */
+
+.cad-scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 38px;
+    height: 38px;
+    background: #09090b;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid #ff5500; /* CAD signální hrana */
+    border-radius: 0px !important;
+    color: #a1a1aa;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 99;
+
+    /* Výchozí skrytý stav s plynulým náběhem */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.cad-scroll-top .cad-corner-mark {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 4px;
+    height: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transition: border-color 0.2s ease;
+}
+
+/* Viditelný stav po doscrolování */
+.cad-scroll-top.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* Hover stav */
+.cad-scroll-top:hover {
+    border-color: #ff5500;
+    color: #ffffff;
+    background: rgba(255, 85, 0, 0.08);
+}
+
+.cad-scroll-top:hover .cad-corner-mark {
+    border-color: #ff5500;
+}
+
+.cad-scroll-top:active {
+    background: #ff5500;
+    color: #000000;
+}
+
+/* Na mobilních displejích decentní odsazení od okraje */
+@media (max-width: 640px) {
+    .cad-scroll-top {
+        bottom: 16px;
+        right: 16px;
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+}
+
+
+
+
