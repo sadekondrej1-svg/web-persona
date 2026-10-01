@@ -74,6 +74,7 @@
 
     <!-- Vlastní styly -->
     <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/components.css">
 </head>
 
 <body class="bg-[#070709] text-zinc-100 font-sans antialiased min-h-screen overflow-x-hidden relative">
@@ -170,274 +171,339 @@
             <div class="hero-bottom-fade" aria-hidden="true"></div>
         </section>
 
-        <!-- SECTION: ABOUT (INŽENÝRSKÝ PROFIL) -->
-        <section id="about" class="w-full bg-[#070709] py-20 sm:py-28">
-            <div class="max-w-4xl mx-auto px-4 sm:px-8">
-                <!-- Nadpis sekce v monospace -->
-                <div class="text-xs font-mono text-[#FF5500] tracking-wider uppercase mb-6 sm:mb-8 reveal-spatial">
-                    // PROFIL
-                </div>
-
-                <!-- Redakční dvousloupcový blok -->
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
-                    <!-- Vlevo: Lidský a věcný text -->
-                    <div class="md:col-span-6 reveal-spatial">
-                        <p class="text-zinc-200 text-lg sm:text-xl leading-relaxed font-normal">
-                            Navrhuji a vyvíjím backendové systémy, moderní webové aplikace a datové integrace.
-                            Soustředím se na přehledný kód, rychlá rozhraní a spolehlivou architekturu bez nutnosti
-                            neustálého dohledu.
-                        </p>
-                    </div>
-
-                    <!-- Vpravo: Čisté řádky se zaměřením -->
-                    <div class="md:col-span-6 pt-2 md:pt-0 reveal-spatial reveal-delay-1">
-                        <div class="border-b border-white/[0.05] pb-4 mb-4">
-                            <div class="text-sm font-medium text-zinc-100">Backend &amp; Databáze</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Python, FastAPI, PostgreSQL, Redis,
-                                asynchronní architektura</div>
-                        </div>
-                        <div class="border-b border-white/[0.05] pb-4 mb-4">
-                            <div class="text-sm font-medium text-zinc-100">Frontend</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Next.js, React, TypeScript, Tailwind
-                                CSS</div>
-                        </div>
-                        <div class="pb-1">
-                            <div class="text-sm font-medium text-zinc-100">Systémový výkon</div>
-                            <div class="text-sm text-zinc-400 font-normal mt-0.5">Vysokovýkonná API, caching,
-                                deterministický běh</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Osobní inženýrský profil & Vzdělání a praxe -->
-                <div class="mt-20 pt-16 border-t border-white/[0.06]">
-                    <!-- Úvodní bio (Inženýrský profil) -->
+        <!-- SOUVISLÝ ČERNÝ KONTENTOVÝ BLOK (SEKCE PROFIL, SYSTÉMY, KONTAKT) -->
+        <div class="w-full bg-[#070709] relative z-10">
+            <!-- SECTION: ABOUT (INŽENÝRSKÝ PROFIL) -->
+            <section id="about" class="w-full py-20 sm:py-28">
+                <div class="max-w-4xl mx-auto px-4 sm:px-8">
+                    <!-- Nadpis sekce v monospace -->
                     <div
-                        class="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal space-y-4 reveal-spatial">
-                        <p>
-                            Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy zajímalo, jak
-                            věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem slaboproudou elektrotechniku v
-                            Děčíně, kde jsem pracoval s obvody, signály a hardwarem.
-                        </p>
-                        <p>
-                            Tento návyk si přenáším i do programování – nestavím systémy jako černé skříňky. Soustředím
-                            se na deterministické chování, spolehlivé datové toky a kód s minimální režií. Paralelně se
-                            studiem Aplikace informatiky v přírodních vědách na ČVUT FJFI vyvíjím specializované interní
-                            nástroje, backendy a AI integrace na míru.
-                        </p>
-                        <p>
-                            Když zrovna nekóduji, věnuji se fyzickým projektům a stavbě věcí, na které si lze sáhnout.
-                        </p>
+                        class="text-xs font-mono text-[#FF5500] tracking-[0.15em] uppercase mb-6 sm:mb-8 reveal-spatial">
+                        PROFIL
                     </div>
 
-                    <!-- Strukturované milníky (Kompaktní přehled) -->
-                    <div class="mt-12 space-y-4 max-w-3xl reveal-spatial reveal-delay-1">
-                        <!-- Položka 1: ČVUT FJFI -->
-                        <div
-                            class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
-                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
-                                2026 — <span class="text-[#FF5500]">Současnost</span>
-                            </div>
-                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
-                                <span class="text-zinc-100 font-medium">ČVUT v Praze, FJFI</span>
-                                <span class="text-zinc-500 mx-1.5">·</span>
-                                <span class="text-zinc-400">Aplikace informatiky v přírodních vědách (Bc.)</span>
-                            </div>
+                    <!-- Redakční dvousloupcový blok (Technický přehled & Zaměření) -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-start">
+                        <!-- Vlevo: Lidský a věcný text -->
+                        <div class="md:col-span-6 reveal-spatial">
+                            <p class="text-zinc-200 text-lg sm:text-xl leading-relaxed font-normal">
+                                Navrhuji a vyvíjím backendové systémy, moderní webové aplikace a datové integrace.
+                                Soustředím se na přehledný kód, rychlá rozhraní a spolehlivou architekturu bez nutnosti
+                                neustálého dohledu.
+                            </p>
                         </div>
 
-                        <!-- Položka 2: Nezávislý vývojář -->
-                        <div
-                            class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
-                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
-                                2026 — <span class="text-[#FF5500]">Současnost</span>
+                        <!-- Vpravo: Čisté řádky se zaměřením -->
+                        <div class="md:col-span-6 pt-2 md:pt-0 reveal-spatial reveal-delay-1">
+                            <div class="border-b border-white/[0.05] pb-4 mb-4">
+                                <div class="text-sm font-medium text-zinc-100">Backend &amp; Databáze</div>
+                                <div class="text-sm text-zinc-400 font-normal mt-0.5">Python, FastAPI, PostgreSQL,
+                                    Redis,
+                                    asynchronní architektura</div>
                             </div>
-                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
-                                <span class="text-zinc-100 font-medium">Nezávislý vývojář</span>
-                                <span class="text-zinc-500 mx-1.5">·</span>
-                                <span class="text-zinc-400">Datové pipeline, systémové integrace a zakázkový
-                                    backend</span>
+                            <div class="border-b border-white/[0.05] pb-4 mb-4">
+                                <div class="text-sm font-medium text-zinc-100">Frontend</div>
+                                <div class="text-sm text-zinc-400 font-normal mt-0.5">Next.js, React, TypeScript,
+                                    Tailwind
+                                    CSS</div>
                             </div>
-                        </div>
-
-                        <!-- Položka 3: SŠ Děčín -->
-                        <div
-                            class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
-                            <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
-                                2022 — 2026
-                            </div>
-                            <div class="flex-1 text-sm text-zinc-300 leading-snug">
-                                <span class="text-zinc-100 font-medium">VOŠ a SPŠ Děčín</span>
-                                <span class="text-zinc-500 mx-1.5">·</span>
-                                <span class="text-zinc-400">Maturitní obor Elektrotechnika - Počítačové systémy</span>
+                            <div class="pb-1">
+                                <div class="text-sm font-medium text-zinc-100">Systémový výkon</div>
+                                <div class="text-sm text-zinc-400 font-normal mt-0.5">Vysokovýkonná API, caching,
+                                    deterministický běh</div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- SECTION: PROJECTS (ARCHITEKTURA V PRAXI / SYSTÉMY) -->
-        <section id="projects" class="w-full bg-[#070709] py-20 sm:py-28 border-t border-white/10">
-            <div class="max-w-4xl mx-auto px-4 sm:px-8">
-                <!-- Nadpis sekce v monospace -->
-                <div class="text-xs font-mono text-[#FF5500] tracking-wider uppercase mb-3 sm:mb-4 reveal-spatial">
-                    // AUTOMATIZACE &amp; DATOVÉ PIPELINE
-                </div>
+                    <!-- Osobní inženýrský profil & Vzdělání a praxe -->
+                    <div class="mt-20 pt-16 border-t border-white/[0.06]">
+                        <!-- Úvodní bio a portrét v dvousloupcovém rozvržení -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 items-start">
+                            <!-- Na mobilu portrét nahoře nad textem, na desktopu vpravo -->
+                            <div class="order-1 md:order-2 md:col-span-5 flex justify-center md:justify-end reveal-spatial reveal-delay-1">
+                                <div class="portrait-cad-frame">
+                                    <span class="cad-bracket tl"></span>
+                                    <span class="cad-bracket tr"></span>
+                                    <span class="cad-bracket bl"></span>
+                                    <span class="cad-bracket br"></span>
+                                    <div class="profile-portrait-frame">
+                                        <img 
+                                            src="public/assets/portrait.png" 
+                                            alt="Ondřej Šádek" 
+                                            class="profile-portrait-img"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- Název projektu & Stack štítky -->
-                <div class="reveal-spatial reveal-delay-1">
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
-                        ARES Data Pipeline
-                    </h2>
-
-                    <!-- Tech stack badges (velmi decentní) -->
-                    <div class="flex flex-wrap items-center gap-2 mt-3.5">
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Python</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Gemini AI</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">SQLite</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">ARES API</span>
-                    </div>
-
-                    <!-- Popis projektu -->
-                    <p class="text-zinc-400 text-sm sm:text-base leading-relaxed font-normal max-w-2xl mt-6">
-                        Automatizovaný systém pro vytěžování českých rejstříků (ARES, Justice.cz). Pomocí Gemini AI analyzuje účetní závěrky, dohledává ověřené kontakty na vedení firem a exportuje čistá strukturovaná data pro obchod.
-                    </p>
-                </div>
-
-                <!-- Čtyřfázový flow (Architektura pipeline dle diagramu) -->
-                <div
-                    class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4 mt-10 pt-8 border-t border-white/10 reveal-spatial reveal-delay-2">
-                    <!-- Stage 1 -->
-                    <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">01 / Sběr z rejstříků</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Filtrování firem z ARES dle oboru a okamžitá kontrola insolvencí (ISIR).
-                        </p>
-                    </div>
-                    <!-- Stage 2 -->
-                    <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">02 / AI extrakce financí</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Stahování účetních závěrek ze Sbírky listin a strojové čtení tržeb a zisku.
-                        </p>
-                    </div>
-                    <!-- Stage 3 -->
-                    <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">03 / Ověření kontaktů</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Dohledání webů a párování jednatelů na ověřené e-maily a telefony.
-                        </p>
-                    </div>
-                    <!-- Stage 4 -->
-                    <div class="flex flex-col">
-                        <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 font-mono tracking-tight mb-2">04 / Export dat</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed font-normal">
-                            Generování přehledného manažerského Excelu seřazeného podle obratu.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- AUTENTICKÝ TERMINÁL S REÁLNÝMI LOGY (CAD Telemetry Component) -->
-                <div
-                    class="mt-10 rounded-[8px] border border-white/[0.08] bg-[#0c0c0e] overflow-hidden reveal-spatial reveal-delay-3 shadow-2xl">
-                    <!-- Horní inženýrská lišta terminálu -->
-                    <div
-                        class="terminal-header flex items-center justify-between px-3 sm:px-4 h-9 sm:h-10 bg-[#121215] border-b border-white/[0.08]">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <!-- Oranžová mikrodioda a systémový štítek -->
+                            <!-- Vlevo na desktopu / pod portrétem na mobilu: Blok textu -->
                             <div
-                                class="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#FF5500] tracking-[0.05em] uppercase font-medium shrink-0">
-                                <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>
-                                <span class="sm:hidden">TELEMETRY</span>
-                                <span class="hidden sm:inline">SYS // PIPELINE_TELEMETRY</span>
+                                class="order-2 md:order-1 md:col-span-7 text-zinc-300 text-sm sm:text-base leading-relaxed font-normal space-y-4 reveal-spatial">
+                                <p>
+                                    Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy zajímalo,
+                                    jak
+                                    věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem slaboproudou elektrotechniku
+                                    v
+                                    Děčíně, kde jsem pracoval s obvody, signály a hardwarem.
+                                </p>
+                                <p>
+                                    Tento návyk si přenáším i do programování – nestavím systémy jako černé skříňky.
+                                    Soustředím
+                                    se na deterministické chování, spolehlivé datové toky a kód s minimální režií. Paralelně
+                                    se
+                                    studiem Aplikace informatiky v přírodních vědách na ČVUT FJFI vyvíjím specializované
+                                    interní
+                                    nástroje, backendy a AI integrace na míru.
+                                </p>
+                                <p>
+                                    Když zrovna nekóduji, věnuji se fyzickým projektům a stavbě věcí, na které si lze
+                                    sáhnout.
+                                </p>
                             </div>
-                            <span
-                                class="hidden sm:inline-block font-mono text-[11px] text-zinc-500 tracking-tight">python
-                                main.py</span>
                         </div>
-                        <button type="button" id="run-terminal-sim" class="terminal-run-btn shrink-0"
-                            aria-label="Spustit simulaci pipeline">
-                            <span class="sim-btn-label">
-                                <span class="sm:hidden">▶ Spustit</span>
-                                <span class="hidden sm:inline">Spustit simulaci ▶</span>
+
+                        <!-- Strukturované milníky (Kompaktní přehled) -->
+                        <div class="mt-12 space-y-4 max-w-3xl reveal-spatial reveal-delay-1">
+                            <!-- Položka 1: ČVUT FJFI -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                                <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                    2026 — <span class="text-[#FF5500]">Současnost</span>
+                                </div>
+                                <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                    <span class="text-zinc-100 font-medium">ČVUT v Praze, FJFI</span>
+                                    <span class="text-zinc-500 mx-1.5">·</span>
+                                    <span class="text-zinc-400">Aplikace informatiky v přírodních vědách (Bc.)</span>
+                                </div>
+                            </div>
+
+                            <!-- Položka 2: Nezávislý vývojář -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                                <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                    2026 — <span class="text-[#FF5500]">Současnost</span>
+                                </div>
+                                <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                    <span class="text-zinc-100 font-medium">Nezávislý vývojář</span>
+                                    <span class="text-zinc-500 mx-1.5">·</span>
+                                    <span class="text-zinc-400">Datové pipeline, systémové integrace a zakázkový
+                                        backend</span>
+                                </div>
+                            </div>
+
+                            <!-- Položka 3: SŠ Děčín -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/[0.04] pb-4">
+                                <div class="text-xs text-zinc-500 font-mono tracking-wider uppercase sm:w-44 shrink-0">
+                                    2022 — 2026
+                                </div>
+                                <div class="flex-1 text-sm text-zinc-300 leading-snug">
+                                    <span class="text-zinc-100 font-medium">VOŠ a SPŠ Děčín</span>
+                                    <span class="text-zinc-500 mx-1.5">·</span>
+                                    <span class="text-zinc-400">Maturitní obor Elektrotechnika - Počítačové
+                                        systémy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dělicí linka do ztracena před systémy -->
+            <div class="w-full bg-[#070709]">
+                <div class="divider-fade" aria-hidden="true"></div>
+            </div>
+
+            <!-- SECTION: PROJECTS (ARCHITEKTURA V PRAXI / SYSTÉMY) -->
+            <section id="projects" class="w-full py-20 sm:py-28">
+                <div class="max-w-4xl mx-auto px-4 sm:px-8">
+                    <!-- Nadpis sekce v monospace -->
+                    <div
+                        class="text-xs font-mono text-[#FF5500] tracking-[0.15em] uppercase mb-3 sm:mb-4 reveal-spatial">
+                        SYSTÉMY
+                    </div>
+
+                    <!-- Název projektu & Stack štítky -->
+                    <div class="reveal-spatial reveal-delay-1">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
+                            ARES Data Pipeline
+                        </h2>
+
+                        <!-- Tech stack badges (velmi decentní) -->
+                        <div class="flex flex-wrap items-center gap-2 mt-3.5">
+                            <span
+                                class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Python</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">Gemini
+                                AI</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">SQLite</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[11px] font-mono text-zinc-400 border border-white/[0.1] bg-white/[0.02]">ARES
+                                API</span>
+                        </div>
+
+                        <!-- Popis projektu -->
+                        <p class="text-zinc-400 text-sm sm:text-base leading-relaxed font-normal max-w-2xl mt-6">
+                            Automatizovaný systém pro vytěžování českých rejstříků (ARES, Justice.cz). Pomocí Gemini AI
+                            analyzuje účetní závěrky, dohledává ověřené kontakty na vedení firem a exportuje čistá
+                            strukturovaná data pro obchod.
+                        </p>
+                    </div>
+
+                    <!-- HARDWARE DATA BUS ARCHITECTURE -->
+                    <div class="pipeline-bus mt-10 reveal-spatial reveal-delay-2" aria-label="Pipeline Architecture">
+                        <div class="bus-line">
+                            <div class="bus-progress"></div>
+                        </div>
+
+                        <div class="bus-node" data-step="1">
+                            <div class="bus-marker">
+                                <span class="diamond"></span>
+                                <span class="node-id">01</span>
+                            </div>
+                            <div class="node-info">
+                                <span class="node-title">Sběr z rejstříků</span>
+                                <span class="node-sub">ARES &amp; ISIR</span>
+                            </div>
+                        </div>
+
+                        <div class="bus-node" data-step="2">
+                            <div class="bus-marker">
+                                <span class="diamond"></span>
+                                <span class="node-id">02</span>
+                            </div>
+                            <div class="node-info">
+                                <span class="node-title">AI extrakce</span>
+                                <span class="node-sub">Gemini Parser</span>
+                            </div>
+                        </div>
+
+                        <div class="bus-node" data-step="3">
+                            <div class="bus-marker">
+                                <span class="diamond"></span>
+                                <span class="node-id">03</span>
+                            </div>
+                            <div class="node-info">
+                                <span class="node-title">Validace</span>
+                                <span class="node-sub">Web &amp; Kontakty</span>
+                            </div>
+                        </div>
+
+                        <div class="bus-node" data-step="4">
+                            <div class="bus-marker">
+                                <span class="diamond"></span>
+                                <span class="node-id">04</span>
+                            </div>
+                            <div class="node-info">
+                                <span class="node-title">Export</span>
+                                <span class="node-sub">Manažerský XLSX</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AUTENTICKÝ TERMINÁL S REÁLNÝMI LOGY (CAD Telemetry Component) -->
+                    <div
+                        class="mt-10 rounded-[8px] border border-white/[0.08] bg-[#0c0c0e] overflow-hidden reveal-spatial reveal-delay-3 shadow-2xl">
+                        <!-- Horní inženýrská lišta terminálu -->
+                        <div
+                            class="terminal-header flex items-center justify-between px-3 sm:px-4 h-9 sm:h-10 bg-[#121215] border-b border-white/[0.08]">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <!-- Oranžová mikrodioda a systémový štítek -->
+                                <div
+                                    class="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#FF5500] tracking-[0.05em] uppercase font-medium shrink-0">
+                                    <span
+                                        class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>
+                                    <span class="sm:hidden">TELEMETRY</span>
+                                    <span class="hidden sm:inline">SYS // PIPELINE_TELEMETRY</span>
+                                </div>
+                                <span
+                                    class="hidden sm:inline-block font-mono text-[11px] text-zinc-500 tracking-tight">python
+                                    main.py</span>
+                            </div>
+                            <button type="button" id="run-terminal-sim" class="terminal-run-btn shrink-0"
+                                aria-label="Spustit simulaci pipeline">
+                                <span class="sim-btn-label">
+                                    <span class="sm:hidden">▶ Spustit</span>
+                                    <span class="hidden sm:inline">Spustit simulaci ▶</span>
+                                </span>
+                            </button>
+                        </div>
+                        <!-- Tělo terminálu -->
+                        <div id="terminal-screen"
+                            class="font-mono text-xs leading-[1.6] text-[#a1a1aa] overflow-x-auto whitespace-pre space-y-1.5 min-h-[160px] sm:min-h-[220px]">
+                            <div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span
+                                        class="text-[#FF5500] font-semibold">$</span></span> <span
+                                    class="text-[#d4d4d8]">python main.py <span
+                                        class="hidden sm:inline">--config=mna_search.json</span></span><span
+                                    class="inline-block w-2 h-3.5 bg-zinc-400 ml-1.5 align-middle animate-pulse"></span>
+                            </div>
+                            <div class="terminal-row text-[#71717a]"><span
+                                    class="text-[#FF5500] font-semibold">[READY]</span> <span
+                                    class="hidden sm:inline">Pipeline v pohotovostním režimu. Stiskněte [Spustit
+                                    simulaci ▶]</span><span class="sm:hidden">Připraveno ke spuštění.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dělicí linka do ztracena před kontaktem -->
+            <div class="w-full bg-[#070709]">
+                <div class="divider-fade" aria-hidden="true"></div>
+            </div>
+
+            <!-- SECTION: CONTACT -->
+            <section id="contact" class="w-full py-20 sm:py-28">
+                <div class="max-w-4xl mx-auto px-4 sm:px-8 reveal-spatial">
+                    <div class="text-zinc-400 text-sm mb-3 font-normal">
+                        Máte projekt nebo dotaz?
+                    </div>
+                    <div>
+                        <button type="button" id="copy-email-btn" data-email="automatizace.sadek@gmail.com"
+                            class="btn-titanium group relative gap-2.5 px-4 py-2.5 rounded-[4px] sm:rounded-md font-mono text-xs sm:text-sm select-none cursor-pointer"
+                            aria-label="Zkopírovat e-mailovou adresu do schránky">
+                            <!-- Výchozí stav -->
+                            <span class="copy-default flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#FF5500]"></span>
+                                <span class="font-sans font-medium text-zinc-200">automatizace.sadek@gmail.com</span>
+                                <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors ml-1"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                    aria-hidden="true">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </span>
+
+                            <!-- Stav po zkopírování (výchozí skrytý) -->
+                            <span class="copy-success hidden items-center gap-1.5 text-[#FF5500]" aria-live="polite">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-mono text-xs tracking-wide">ZKOPÍROVÁNO</span>
                             </span>
                         </button>
                     </div>
-                    <!-- Tělo terminálu -->
-                    <div id="terminal-screen"
-                        class="font-mono text-xs leading-[1.6] text-[#a1a1aa] overflow-x-auto whitespace-pre space-y-1.5 min-h-[160px] sm:min-h-[220px]">
-                        <div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span
-                                    class="text-[#FF5500] font-semibold">$</span></span> <span
-                                class="text-[#d4d4d8]">python main.py <span
-                                    class="hidden sm:inline">--config=mna_search.json</span></span><span
-                                class="inline-block w-2 h-3.5 bg-zinc-400 ml-1.5 align-middle animate-pulse"></span>
-                        </div>
-                        <div class="terminal-row text-[#71717a]"><span
-                                class="text-[#FF5500] font-semibold">[READY]</span> <span
-                                class="hidden sm:inline">Pipeline v pohotovostním režimu. Stiskněte [Spustit simulaci ▶]</span><span
-                                class="sm:hidden">Připraveno ke spuštění.</span></div>
+                    <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                        <a href="https://github.com/sadekondrej1-svg" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2.5 text-zinc-400 hover:text-white active:scale-[0.97] transition-all duration-75 group text-sm sm:text-base select-none">
+                            <svg class="w-5 h-5 fill-current text-zinc-400 group-hover:text-white transition-colors shrink-0"
+                                viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                            </svg>
+                            <span>github.com/sadekondrej1-svg</span>
+                            <span class="text-zinc-600 group-hover:text-[#FF5500] transition-colors text-xs">↗</span>
+                        </a>
+                        <span class="hidden sm:inline text-zinc-600">•</span>
+                        <span class="text-xs sm:text-sm text-zinc-500 font-normal"><span
+                                class="inline-block w-1.5 h-1.5 bg-[#FF5500] rounded-[1px] mr-1.5 align-middle"></span>Děčín,
+                            CZ / Remote</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Dělicí linka do ztracena před kontaktem -->
-        <div class="divider-fade" aria-hidden="true"></div>
-
-        <!-- SECTION: CONTACT -->
-        <section id="contact" class="w-full bg-[#070709] py-20 sm:py-28">
-            <div class="max-w-4xl mx-auto px-4 sm:px-8 reveal-spatial">
-                <div class="text-zinc-400 text-sm mb-3 font-normal">
-                    Máte projekt nebo dotaz?
-                </div>
-                <div>
-                    <button type="button" id="copy-email-btn" data-email="automatizace.sadek@gmail.com"
-                        class="btn-titanium group relative gap-2.5 px-4 py-2.5 rounded-[4px] sm:rounded-md font-mono text-xs sm:text-sm select-none cursor-pointer"
-                        aria-label="Zkopírovat e-mailovou adresu do schránky">
-                        <!-- Výchozí stav -->
-                        <span class="copy-default flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#FF5500]"></span>
-                            <span class="font-sans font-medium text-zinc-200">automatizace.sadek@gmail.com</span>
-                            <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors ml-1"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-                                aria-hidden="true">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                        </span>
-
-                        <!-- Stav po zkopírování (výchozí skrytý) -->
-                        <span class="copy-success hidden items-center gap-1.5 text-[#FF5500]" aria-live="polite">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                stroke-width="2.5" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span class="font-mono text-xs tracking-wide">ZKOPÍROVÁNO</span>
-                        </span>
-                    </button>
-                </div>
-                <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                    <a href="https://github.com/sadekondrej1-svg" target="_blank" rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2.5 text-zinc-400 hover:text-white active:scale-[0.97] transition-all duration-75 group text-sm sm:text-base select-none">
-                        <svg class="w-5 h-5 fill-current text-zinc-400 group-hover:text-white transition-colors shrink-0"
-                            viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                        </svg>
-                        <span>github.com/sadekondrej1-svg</span>
-                        <span class="text-zinc-600 group-hover:text-[#FF5500] transition-colors text-xs">↗</span>
-                    </a>
-                    <span class="hidden sm:inline text-zinc-600">•</span>
-                    <span class="text-xs sm:text-sm text-zinc-500 font-normal"><span
-                            class="inline-block w-1.5 h-1.5 bg-[#FF5500] rounded-[1px] mr-1.5 align-middle"></span>Děčín,
-                        CZ / Remote</span>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <!-- SECTION: BENTO_GRID -->
 

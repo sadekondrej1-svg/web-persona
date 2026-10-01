@@ -1,3 +1,5 @@
+@import "./components.css";
+
 /* Vlastní globální pravidla a reset */
 html {
     background-color: #070709;
@@ -118,9 +120,9 @@ body {
     will-change: transform;
     transform: translateZ(0);
     transition: background-color 150ms ease,
-                border-color 150ms ease,
-                color 150ms ease,
-                transform 100ms ease;
+        border-color 150ms ease,
+        color 150ms ease,
+        transform 100ms ease;
 }
 
 .btn-nav:hover {
@@ -146,9 +148,9 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     color: #f4f4f5;
     transition: background-color 150ms ease,
-                border-color 150ms ease,
-                color 150ms ease,
-                transform 100ms ease;
+        border-color 150ms ease,
+        color 150ms ease,
+        transform 100ms ease;
 }
 
 .btn-titanium:hover,
@@ -164,11 +166,42 @@ body {
     background: #101012;
 }
 
-/* Dělicí linky do ztracena (Gradient Dividers) */
+/* ==========================================================================
+   Star Flare Dividers (Hvězdný paprsek / Optické oddělovací linky)
+   ========================================================================== */
+hr,
+.divider,
+.section-divider,
 .divider-fade {
+    border: none;
     height: 1px;
     width: 100%;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.01) 4%,
+            rgba(255, 255, 255, 0.04) 10%,
+            rgba(255, 255, 255, 0.10) 18%,
+            rgba(255, 255, 255, 0.22) 28%,
+            rgba(255, 255, 255, 0.40) 36%,
+            rgba(255, 255, 255, 0.65) 44%,
+            rgba(255, 255, 255, 0.90) 48%,
+            #ffffff 50%,
+            rgba(255, 255, 255, 0.90) 52%,
+            rgba(255, 255, 255, 0.65) 56%,
+            rgba(255, 255, 255, 0.40) 64%,
+            rgba(255, 255, 255, 0.22) 72%,
+            rgba(255, 255, 255, 0.10) 82%,
+            rgba(255, 255, 255, 0.04) 90%,
+            rgba(255, 255, 255, 0.01) 96%,
+            transparent 100%);
+}
+
+hr,
+.divider,
+.section-divider {
+    margin: 3rem auto;
 }
 
 /* Šikmý lesk (shimmer) oříznutý striktně na tvar písma – čistě světelná difuzní vlna */
@@ -301,39 +334,32 @@ body {
 /* Sametový přechod CAD sítě do ztracena (Vignette Fade) */
 .hero-grid-fade,
 #hero-warp-canvas {
-    -webkit-mask-image: radial-gradient(
-        ellipse 75% 65% at 50% 42%,
-        #000000 25%,
-        rgba(0, 0, 0, 0.65) 55%,
-        rgba(0, 0, 0, 0.2) 78%,
-        transparent 95%
-    );
-    mask-image: radial-gradient(
-        ellipse 75% 65% at 50% 42%,
-        #000000 25%,
-        rgba(0, 0, 0, 0.65) 55%,
-        rgba(0, 0, 0, 0.2) 78%,
-        transparent 95%
-    );
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 42%,
+            #000000 25%,
+            rgba(0, 0, 0, 0.65) 55%,
+            rgba(0, 0, 0, 0.2) 78%,
+            transparent 95%);
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 42%,
+            #000000 25%,
+            rgba(0, 0, 0, 0.65) 55%,
+            rgba(0, 0, 0, 0.2) 78%,
+            transparent 95%);
 }
 
 @media (max-width: 768px) {
+
     .hero-grid-fade,
     #hero-warp-canvas {
-        -webkit-mask-image: radial-gradient(
-            ellipse 95% 72% at 50% 43%,
-            #000000 20%,
-            rgba(0, 0, 0, 0.55) 45%,
-            rgba(0, 0, 0, 0.15) 68%,
-            transparent 88%
-        );
-        mask-image: radial-gradient(
-            ellipse 95% 72% at 50% 43%,
-            #000000 20%,
-            rgba(0, 0, 0, 0.55) 45%,
-            rgba(0, 0, 0, 0.15) 68%,
-            transparent 88%
-        );
+        -webkit-mask-image: radial-gradient(ellipse 95% 72% at 50% 43%,
+                #000000 20%,
+                rgba(0, 0, 0, 0.55) 45%,
+                rgba(0, 0, 0, 0.15) 68%,
+                transparent 88%);
+        mask-image: radial-gradient(ellipse 95% 72% at 50% 43%,
+                #000000 20%,
+                rgba(0, 0, 0, 0.55) 45%,
+                rgba(0, 0, 0, 0.15) 68%,
+                transparent 88%);
     }
 }
 
@@ -344,14 +370,12 @@ body {
     left: 0;
     right: 0;
     height: 220px;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(7, 7, 9, 0.15) 25%,
-        rgba(7, 7, 9, 0.6) 60%,
-        rgba(7, 7, 9, 0.95) 88%,
-        #070709 100%
-    );
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(7, 7, 9, 0.15) 25%,
+            rgba(7, 7, 9, 0.6) 60%,
+            rgba(7, 7, 9, 0.95) 88%,
+            #070709 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -402,6 +426,7 @@ a[href*="github.com"]:hover span:last-child {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -412,6 +437,7 @@ a[href*="github.com"]:hover span:last-child {
         opacity: 0;
         transform: translateY(18px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -460,10 +486,13 @@ a[href*="github.com"]:hover span:last-child {
    Pomalý dech ambientního světla (Subtle Breathing)
    ========================================================================== */
 @keyframes subtleBreathe {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.35;
         transform: translate(-50%, -50%) scale(1);
     }
+
     50% {
         opacity: 0.55;
         transform: translate(-50%, -50%) scale(1.04);
@@ -476,6 +505,7 @@ a[href*="github.com"]:hover span:last-child {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .anim-cinematic-bg,
     .animate-cinematic,
     .anim-cinematic-nav,
@@ -515,7 +545,7 @@ html.lenis body {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 
@@ -555,14 +585,13 @@ html.lenis body {
     top: 0;
     left: 0;
     right: 0;
-    height: 140px; /* dostatečná výška pro měkký náběh */
-    background: linear-gradient(
-        to bottom,
-        #070709 0%,
-        rgba(7, 7, 9, 0.75) 30%,
-        rgba(7, 7, 9, 0.4) 65%,
-        transparent 100%
-    );
+    height: 140px;
+    /* dostatečná výška pro měkký náběh */
+    background: linear-gradient(to bottom,
+            #070709 0%,
+            rgba(7, 7, 9, 0.75) 30%,
+            rgba(7, 7, 9, 0.4) 65%,
+            transparent 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -591,6 +620,195 @@ html.lenis body {
 }
 
 /* ==========================================================================
+   CAD Hardware Data Bus Architecture (#projects)
+   ========================================================================== */
+.pipeline-bus {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.25rem 0 1rem;
+    background: transparent;
+}
+
+.pipeline-bus .bus-line {
+    position: absolute;
+    top: calc(1.25rem + 6px);
+    left: 6px;
+    right: 6px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.pipeline-bus .bus-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #FF5500;
+    box-shadow: 0 0 8px rgba(255, 85, 0, 0.7);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pipeline-bus .bus-node {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    z-index: 2;
+    cursor: default;
+    user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.pipeline-bus .bus-marker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    background: #070709;
+    padding-right: 8px;
+    position: relative;
+    z-index: 2;
+}
+
+.pipeline-bus .diamond {
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: #09090b;
+    flex-shrink: 0;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.pipeline-bus .node-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #71717a;
+    transition: color 0.25s ease;
+}
+
+.pipeline-bus .node-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pipeline-bus .node-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #71717a;
+    letter-spacing: -0.01em;
+    transition: color 0.25s ease;
+}
+
+.pipeline-bus .node-sub {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    color: #52525b;
+    transition: color 0.25s ease;
+}
+
+/* Stavy uzlů: Aktivní (.bus-node.is-active) */
+.pipeline-bus .bus-node.is-active .diamond {
+    border-color: #FF5500;
+    background: #FF5500;
+    box-shadow: 0 0 10px rgba(255, 85, 0, 0.7);
+    transform: rotate(45deg) scale(1.15);
+}
+
+.pipeline-bus .bus-node.is-active .node-id {
+    color: #FF5500;
+    font-weight: 600;
+}
+
+.pipeline-bus .bus-node.is-active .node-title {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.pipeline-bus .bus-node.is-active .node-sub {
+    color: #d4d4d8;
+}
+
+/* Stavy uzlů: Dokončený (.bus-node.is-done) */
+.pipeline-bus .bus-node.is-done .diamond {
+    border-color: #FF5500;
+    background: #FF5500;
+    box-shadow: 0 0 6px rgba(255, 85, 0, 0.4);
+    transform: rotate(45deg);
+}
+
+.pipeline-bus .bus-node.is-done .node-id {
+    color: #FF5500;
+}
+
+.pipeline-bus .bus-node.is-done .node-title {
+    color: #f4f4f5;
+}
+
+.pipeline-bus .bus-node.is-done .node-sub {
+    color: #a1a1aa;
+}
+
+/* Hover pro neaktivní uzly */
+.pipeline-bus .bus-node:hover:not(.is-active):not(.is-done) .diamond {
+    border-color: rgba(255, 85, 0, 0.5);
+    box-shadow: 0 0 6px rgba(255, 85, 0, 0.25);
+}
+
+.pipeline-bus .bus-node:hover:not(.is-active):not(.is-done) .node-title {
+    color: #d4d4d8;
+}
+
+/* RESPONZIVITA (pod 768px): Vertikální uspořádání sběrnice */
+@media (max-width: 767px) {
+    .pipeline-bus {
+        flex-direction: column;
+        gap: 20px;
+        padding: 1rem 0;
+    }
+
+    .pipeline-bus .bus-line {
+        top: calc(1rem + 6px);
+        bottom: calc(1rem + 6px);
+        left: 6px;
+        width: 1px;
+        height: auto;
+        right: auto;
+    }
+
+    .pipeline-bus .bus-progress {
+        width: 100%;
+        height: 0%;
+        transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pipeline-bus .bus-node {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        max-width: none;
+    }
+
+    .pipeline-bus .bus-marker {
+        margin-bottom: 0;
+        padding-right: 0;
+        padding-bottom: 2px;
+        background: #070709;
+        width: 36px;
+        flex-shrink: 0;
+    }
+}
+
+/* ==========================================================================
    CAD Telemetry Component & Terminal (#projects)
    ========================================================================== */
 .terminal-run-btn {
@@ -599,7 +817,8 @@ html.lenis body {
     justify-content: center;
     padding: 6px 14px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.75rem; /* text-xs */
+    font-size: 0.75rem;
+    /* text-xs */
     line-height: 1rem;
     white-space: nowrap;
     color: #FF5500;
@@ -655,6 +874,7 @@ html.lenis body {
         opacity: 0;
         transform: translateY(3px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

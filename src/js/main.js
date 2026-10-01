@@ -552,8 +552,78 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpatialReveal();
 
     // ----------------------------------------------------------------------
-    // 6. Autentická simulace CAD Telemetrie Pipeline (#projects terminal)
+    // 6. Schematická hardwarová sběrnice (Data Bus) & CAD Telemetrie Pipeline
     // ----------------------------------------------------------------------
+    let currentPipelineStep = 0;
+
+    function setPipelineStep(stepIndex) {
+        currentPipelineStep = stepIndex;
+        const nodes = document.querySelectorAll('.pipeline-bus .bus-node');
+        const progressBar = document.querySelector('.pipeline-bus .bus-progress');
+        if (!nodes.length) return;
+
+        const isMobile = window.innerWidth < 768;
+
+        if (stepIndex === 0) {
+            nodes.forEach(node => {
+                node.classList.remove('is-active', 'is-done');
+            });
+            if (progressBar) {
+                progressBar.style.width = '0%';
+                progressBar.style.height = '0%';
+            }
+            return;
+        }
+
+        if (stepIndex === 'done' || stepIndex > 4) {
+            nodes.forEach(node => {
+                node.classList.remove('is-active');
+                node.classList.add('is-done');
+            });
+            if (progressBar) {
+                if (isMobile) {
+                    progressBar.style.height = '100%';
+                    progressBar.style.width = '100%';
+                } else {
+                    progressBar.style.width = '100%';
+                    progressBar.style.height = '100%';
+                }
+            }
+            return;
+        }
+
+        const numericStep = parseInt(stepIndex, 10);
+        nodes.forEach(node => {
+            const step = parseInt(node.getAttribute('data-step'), 10);
+            if (step < numericStep) {
+                node.classList.remove('is-active');
+                node.classList.add('is-done');
+            } else if (step === numericStep) {
+                node.classList.remove('is-done');
+                node.classList.add('is-active');
+            } else {
+                node.classList.remove('is-active', 'is-done');
+            }
+        });
+
+        if (progressBar) {
+            const pct = ((numericStep - 1) / 3) * 100;
+            if (isMobile) {
+                progressBar.style.height = `${pct}%`;
+                progressBar.style.width = '100%';
+            } else {
+                progressBar.style.width = `${pct}%`;
+                progressBar.style.height = '100%';
+            }
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        if (currentPipelineStep) {
+            setPipelineStep(currentPipelineStep);
+        }
+    }, { passive: true });
+
     function initTerminalSimulation() {
         const simBtn = document.getElementById('run-terminal-sim');
         const terminalScreen = document.getElementById('terminal-screen');
@@ -594,10 +664,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const promptCmd = isMobile ? 'python main.py' : 'python main.py --config=mna_search.json';
             terminalScreen.innerHTML = `<div class="terminal-row"><span class="text-[#71717a]">ondrej@engine:~<span class="text-[#FF5500] font-semibold">$</span></span> <span class="text-[#d4d4d8]">${promptCmd}</span></div>`;
 
+            // Reset a inicializace sběrnice na 1. krok
+            setPipelineStep(0);
+            setPipelineStep(1);
+
             let currentStep = 0;
 
             function outputNextLine() {
                 if (currentStep < logRows.length) {
+                    // Propojení s hardwarovou sběrnicí
+                    if (currentStep === 0) {
+                        setPipelineStep(1); // Sběr z rejstříků (ARES & ISIR)
+                    } else if (currentStep === 1) {
+                        setPipelineStep(2); // AI extrakce (Gemini)
+                    } else if (currentStep === 4) {
+                        setPipelineStep(3); // Validace kontaktů
+                    } else if (currentStep === 5) {
+                        setPipelineStep(4); // Export dat
+                    }
+
                     const row = document.createElement('div');
                     row.className = 'terminal-row';
                     row.innerHTML = logRows[currentStep];
@@ -614,6 +699,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     finishRow.innerHTML = `<span class="inline-block w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse"></span>${finishText}`;
                     terminalScreen.appendChild(finishRow);
                     terminalScreen.scrollTop = terminalScreen.scrollHeight;
+
+                    // Všechny uzly sběrnice do dokončeného stavu
+                    setPipelineStep('done');
 
                     // Odblokovat tlačítko a nabídnout možnost znovu spustit
                     simBtn.disabled = false;
