@@ -137,14 +137,10 @@
                 </div>
 
                 <!-- 1. Hlavní třířádkový nadpis: filmový náběh s optickým zaostřením po řádcích (100ms, 160ms, 220ms) -->
-                <h1
-                    class="w-full text-center mx-auto text-[22px] xs:text-[26px] sm:text-4xl lg:text-[46px] font-semibold tracking-tight leading-[1.12] text-balance flex flex-col items-center text-center gap-y-1 sm:gap-y-1.5 select-none">
-                    <span class="animate-cinematic anim-delay-100 w-full text-center block"><span
-                            class="headline-metallic-text">Vývoj webových aplikací.</span></span>
-                    <span class="animate-cinematic anim-delay-160 w-full text-center block"><span
-                            class="headline-metallic-text">Backendové architektury.</span></span>
-                    <span class="animate-cinematic anim-delay-220 w-full text-center block"><span
-                            class="headline-metallic-text">Spolehlivá API rozhraní.</span></span>
+                <h1 class="hero-title">
+                    Vývoj webových aplikací<span class="glass-dot">.</span><br>
+                    Backendové architektury<span class="glass-dot">.</span><br>
+                    Spolehlivá API rozhraní<span class="glass-dot">.</span>
                 </h1>
 
                 <!-- 2. Podtitul s organickým zpožděním 300ms -->
@@ -235,15 +231,23 @@
                             </div>
 
                             <!-- Vlevo na desktopu / pod portrétem na mobilu: Blok textu -->
-                            <div
-                                class="about-bio-text order-2 md:order-1 md:col-span-7 reveal-spatial">
-                                <p>Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy zajímalo, jak věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem <span class="bio-hl">slaboproudou elektrotechniku v Děčíně</span>, kde jsem pracoval s obvody, signály a hardwarem.</p>
+                            <div class="about-bio-text order-2 md:order-1 md:col-span-7 reveal-spatial">
+                                <p>Je mi 19 let. Většina lidí vnímá software jako abstraktní vrstvu, ale mě vždy
+                                    zajímalo, jak věci fungují pod kapotou ve fyzickém světě. Vystudoval jsem <span
+                                        class="bio-hl">slaboproudou elektrotechniku v Děčíně</span>, kde jsem pracoval s
+                                    obvody, signály a hardwarem.</p>
 
-                                <p>Při programování se proto soustředím na přehlednou architekturu, <span class="bio-hl">předvídatelné chování systémů</span> a kód s minimální režií. Paralelně se studiem Aplikace informatiky v přírodních vědách na ČVUT FJFI stavím backendové systémy a <span class="bio-hl">praktické AI pipeline</span>.</p>
+                                <p>Při programování se proto soustředím na přehlednou architekturu, <span
+                                        class="bio-hl">předvídatelné chování systémů</span> a kód s minimální režií.
+                                    Paralelně se studiem Aplikace informatiky v přírodních vědách na ČVUT FJFI stavím
+                                    backendové systémy a <span class="bio-hl">praktické AI pipeline</span>.</p>
 
-                                <p>Věřím v integraci jazykových modelů do reálného světa, ale stavím kolem nich <span class="bio-hl">robustní logiku a validaci</span>, aby pracovaly spolehlivě a bez náhodného chování.</p>
+                                <p>Věřím v integraci jazykových modelů do reálného světa, ale stavím kolem nich <span
+                                        class="bio-hl">robustní logiku a validaci</span>, aby pracovaly spolehlivě a bez
+                                    náhodného chování.</p>
 
-                                <p>Když zrovna nekóduji, věnuji se fyzickým projektům a stavbě věcí, na které si lze sáhnout.</p>
+                                <p>Když zrovna nekóduji, věnuji se fyzickým projektům a stavbě věcí, na které si lze
+                                    sáhnout.</p>
                             </div>
                         </div>
 
@@ -327,19 +331,15 @@
                         </div>
 
                         <!-- Technický popis -->
-                        <p class="text-zinc-400 text-sm sm:text-base leading-relaxed font-normal max-w-2xl mt-6">
-                            Autonomní CLI pipeline a parser pro vytěžování českých rejstříků. Propojuje ARES REST API v3 a
-                            insolvenční rejstřík (ISIR), přes asynchronní httpx stahuje účetní závěrky ze Sbírky listin a
-                            pomocí modelu Gemini 2.5 Flash Lite provádí extrakci finančních tabulek (obrat, vlastní kapitál,
-                            výsledek hospodaření). Systém autonomně dohledává kontakty na management firem a exportuje
-                            validovaná data do formátovaného XLSX.
+                        <p class="project-description mt-6">
+                            Autonomní CLI pipeline a parser pro vytěžování českých rejstříků. Propojuje <span class="tech-hl">ARES REST API v3</span> a insolvenční rejstřík (<span class="tech-hl">ISIR</span>), přes asynchronní httpx stahuje účetní závěrky ze Sbírky listin a pomocí modelu <span class="tech-hl">Gemini 2.5 Flash Lite</span> provádí extrakci finančních tabulek (obrat, vlastní kapitál, výsledek hospodaření). Systém autonomně dohledává kontakty na management firem a exportuje validovaná data do <span class="tech-hl">formátovaného XLSX</span>.
                         </p>
                     </div>
 
                     <!-- HARDWARE DATA BUS ARCHITECTURE -->
                     <div class="pipeline-bus is-idle mt-10 reveal-spatial reveal-delay-2"
                         aria-label="Pipeline Architecture">
-                        <div class="bus-line">
+                        <div class="pipeline-bus-track bus-line">
                             <div class="bus-progress"></div>
                         </div>
 
@@ -416,8 +416,7 @@
                                     class="text-[#d4d4d8]">python main.py</span><span
                                     class="inline-block w-2 h-3.5 bg-zinc-400 ml-1.5 align-middle animate-pulse"></span>
                             </div>
-                            <div class="terminal-row text-[#71717a]"><span
-                                    class="text-[#FF5500] font-semibold">[READY]</span> <span>Stiskněte [SPUSTIT_SIMULACI ▶]</span></div>
+                            <div class="terminal-row terminal-prompt-ready text-[#71717a]"><span class="text-[#FF5500] font-semibold">[READY]</span> Stiskněte <span class="terminal-inline-btn">[ SPUSTIT_SIMULACI ▶ ]</span></div>
                         </div>
                     </div>
                 </div>

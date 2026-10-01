@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Responzivní rozteč buněk a kontrast na mobilu:
             const isMobile = width < 768;
-            spacing = isMobile ? 26 : 48;
+            spacing = isMobile ? 34 : 48;
             gridStroke = isMobile ? 'rgba(255, 255, 255, 0.075)' : 'rgba(255, 255, 255, 0.055)';
             crossStroke = isMobile ? 'rgba(255, 255, 255, 0.26)' : 'rgba(255, 255, 255, 0.20)';
 
@@ -711,8 +711,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Vypsání finálního řádku [READY] Stiskněte [SPUSTIT_SIMULACI ▶]
                     idleResetTimer = setTimeout(() => {
                         const readyRow = document.createElement('div');
-                        readyRow.className = 'terminal-row text-[#71717a]';
-                        readyRow.innerHTML = '<span class="text-[#FF5500] font-semibold">[READY]</span> Stiskněte [SPUSTIT_SIMULACI ▶]';
+                        readyRow.className = 'terminal-row terminal-prompt-ready text-[#71717a]';
+                        readyRow.innerHTML = '<span class="text-[#FF5500] font-semibold">[READY]</span> Stiskněte <span class="terminal-inline-btn">[ SPUSTIT_SIMULACI ▶ ]</span>';
                         terminalScreen.appendChild(readyRow);
                         terminalScreen.scrollTop = terminalScreen.scrollHeight;
 
@@ -731,6 +731,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             setTimeout(outputNextLine, 350);
+        });
+
+        // Umožnit spuštění kliknutím na inline tlačítko přímo v terminálu
+        terminalScreen.addEventListener('click', (e) => {
+            if (e.target.closest('.terminal-inline-btn') && !isRunning) {
+                simBtn.click();
+            }
         });
     }
 

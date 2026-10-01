@@ -120,7 +120,8 @@ nav .btn {
    ========================================================================== */
 
 .about-bio-text p {
-    color: #a1a1aa; /* decentní tlumená šedá */
+    color: #a1a1aa;
+    /* decentní tlumená šedá */
     font-size: 15px;
     line-height: 1.7;
     margin-top: 0;
@@ -132,7 +133,8 @@ nav .btn {
 }
 
 .bio-hl {
-    color: #f4f4f5; /* čistá jasná bílá */
+    color: #f4f4f5;
+    /* čistá jasná bílá */
     font-weight: 500;
 }
 
@@ -143,8 +145,8 @@ nav .btn {
 .tech-tags-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 14px 0 20px 0;
+    gap: 6px; /* kompaktnější rozestup */
+    margin: 12px 0 18px 0;
 }
 
 .tech-tag {
@@ -156,8 +158,10 @@ nav .btn {
     color: #d4d4d8;
     background: #0c0c0e;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 2px solid #ff5500; /* CAD akcent */
-    padding: 4px 10px;
+    border-left: 2px solid #ff5500;
+    /* CAD akcent */
+    padding: 3px 8px; /* kompaktní rozměr, aby se všech 7 štítků vešlo na jeden řádek desktopu */
+    white-space: nowrap;
     border-radius: 0px !important;
     user-select: none;
     transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
@@ -168,6 +172,71 @@ nav .btn {
     border-left-color: #ff5500;
     background: rgba(255, 85, 0, 0.06);
     color: #ffffff;
+}
+
+/* Vizuální kotvy v popisu projektu (#systems) */
+.project-description {
+    color: #a1a1aa;
+    line-height: 1.65;
+    font-size: 14.5px;
+    max-width: 780px;
+}
+
+.project-description .tech-hl {
+    color: #f4f4f5;
+    font-weight: 500;
+}
+
+/* Horizontální vodicí linka sběrnice (#systems) */
+.pipeline-bus {
+    padding-top: 0 !important;
+}
+
+.pipeline-bus-track {
+    position: absolute;
+    top: 8px; /* na úroveň středu ikon fází */
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+}
+
+@media (max-width: 767px) {
+    .pipeline-bus {
+        padding-top: 1rem !important;
+    }
+
+    .pipeline-bus-track {
+        top: calc(1rem + 6px);
+        bottom: calc(1rem + 6px);
+        left: 6px;
+        width: 1px;
+        height: auto;
+        right: auto;
+    }
+}
+
+/* Formátování promptu v terminálu (#systems) */
+.terminal-prompt-ready {
+    display: block !important;
+    text-align: left !important;
+    white-space: pre !important;
+    color: #71717a;
+}
+
+.terminal-inline-btn {
+    display: inline-block;
+    color: #ff5500;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.terminal-inline-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 85, 0, 0.2);
 }
 
 /* ==========================================================================
@@ -273,16 +342,21 @@ button#run-sim-btn:disabled,
    ========================================================================== */
 
 @keyframes busIdlePing {
-    0%, 100% {
+
+    0%,
+    100% {
         border-color: rgba(255, 255, 255, 0.15);
         color: #71717a;
         box-shadow: none;
     }
-    10%, 22% {
+
+    10%,
+    22% {
         border-color: #ff5500;
         color: #ff5500;
         box-shadow: 0 0 10px rgba(255, 85, 0, 0.45);
     }
+
     32% {
         border-color: rgba(255, 255, 255, 0.15);
         color: #71717a;
@@ -291,12 +365,17 @@ button#run-sim-btn:disabled,
 }
 
 @keyframes busLabelPing {
-    0%, 100% {
+
+    0%,
+    100% {
         color: #71717a;
     }
-    10%, 22% {
+
+    10%,
+    22% {
         color: #ffffff;
     }
+
     32% {
         color: #71717a;
     }
@@ -309,6 +388,7 @@ button#run-sim-btn:disabled,
 .pipeline-bus.is-idle .bus-node[data-step="1"] .node-id {
     animation: busIdlePing 8s infinite ease-in-out 0s;
 }
+
 .pipeline-bus.is-idle .bus-node[data-step="1"] .node-title,
 .pipeline-bus.is-idle .bus-node[data-step="1"] .stage-label {
     animation: busLabelPing 8s infinite ease-in-out 0s;
@@ -319,6 +399,7 @@ button#run-sim-btn:disabled,
 .pipeline-bus.is-idle .bus-node[data-step="2"] .node-id {
     animation: busIdlePing 8s infinite ease-in-out 2s;
 }
+
 .pipeline-bus.is-idle .bus-node[data-step="2"] .node-title,
 .pipeline-bus.is-idle .bus-node[data-step="2"] .stage-label {
     animation: busLabelPing 8s infinite ease-in-out 2s;
@@ -329,6 +410,7 @@ button#run-sim-btn:disabled,
 .pipeline-bus.is-idle .bus-node[data-step="3"] .node-id {
     animation: busIdlePing 8s infinite ease-in-out 4s;
 }
+
 .pipeline-bus.is-idle .bus-node[data-step="3"] .node-title,
 .pipeline-bus.is-idle .bus-node[data-step="3"] .stage-label {
     animation: busLabelPing 8s infinite ease-in-out 4s;
@@ -339,6 +421,7 @@ button#run-sim-btn:disabled,
 .pipeline-bus.is-idle .bus-node[data-step="4"] .node-id {
     animation: busIdlePing 8s infinite ease-in-out 6s;
 }
+
 .pipeline-bus.is-idle .bus-node[data-step="4"] .node-title,
 .pipeline-bus.is-idle .bus-node[data-step="4"] .stage-label {
     animation: busLabelPing 8s infinite ease-in-out 6s;
@@ -356,7 +439,8 @@ button#run-sim-btn:disabled,
     height: 38px;
     background: #09090b;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 2px solid #ff5500; /* CAD signální hrana */
+    border-bottom: 2px solid #ff5500;
+    /* CAD signální hrana */
     border-radius: 0px !important;
     color: #a1a1aa;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -421,6 +505,54 @@ button#run-sim-btn:disabled,
     }
 }
 
+/* ==========================================================================
+   Hero Title Styling: Stříbrný kovový přechod & Poloprůhledné skleněné tečky (#hero)
+   ========================================================================== */
+.hero-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    user-select: none;
+    /* Přechod: nahoře čistá bílá, dole decentní stříbrno-šedá (ne moc tmavá) */
+    background: linear-gradient(180deg, #ffffff 50%, #b0b0bb 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: cinematicFocus 1.0s cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
+}
 
+@media (min-width: 375px) {
+    .hero-title {
+        font-size: 26px;
+    }
+}
 
+@media (min-width: 640px) {
+    .hero-title {
+        font-size: 36px;
+    }
+}
 
+@media (min-width: 1024px) {
+    .hero-title {
+        font-size: 46px;
+    }
+}
+
+/* Tečky ve stylu kouřového skla tlačítka Kontaktovat */
+.hero-title .glass-dot {
+    display: inline-block;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    /* Poloprůhledné sklo – žádná plná černá barva */
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+    color: rgba(255, 255, 255, 0.35) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    margin-left: 1px;
+}

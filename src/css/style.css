@@ -339,7 +339,9 @@ hr,
 }
 
 /* Architektonický rastr do ztracena (Background Precision Grid) */
-.precision-grid {
+.precision-grid,
+.bg-grid,
+.grid-pattern {
     position: fixed;
     inset: 0;
     width: 100%;
@@ -351,14 +353,24 @@ hr,
     transform: translateZ(0);
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-    background-size: 26px 26px;
+    background-size: 34px 34px;
 }
 
 @media (min-width: 768px) {
-    .precision-grid {
+    .precision-grid,
+    .bg-grid,
+    .grid-pattern {
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
         background-size: 48px 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .precision-grid,
+    .bg-grid,
+    .grid-pattern {
+        background-size: 34px 34px !important;
     }
 }
 
